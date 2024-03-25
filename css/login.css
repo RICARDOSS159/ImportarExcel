@@ -1,0 +1,44 @@
+.Titulo {
+    color:green;
+    position: relative;
+    top: 10px;
+    left: 100px;
+}
+
+
+.gradient-custom-1 {
+    /* fallback for old browsers */
+    background: #fccb90;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    /*background: -webkit-linear-gradient(to right, #24ee7fa9, #d8363a, #dd3675, #b44593);
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*background: linear-gradient(to right, #3fc217a9, #d8363a, #dd3675, #b44593);*/
+    background: #50E141;
+    border-color: #50E141;
+    }
+
+
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #fccb90;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    /*background: -webkit-linear-gradient(to right, #24ee7fa9, #d8363a, #dd3675, #b44593);
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #d8363a, #fafafa);
+    }
+    
+    @media (min-width: 768px) {
+    .gradient-form {
+    height: 130% !important;
+    }
+    }
+    @media (min-width: 769px) {
+    .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+    }
+    }
