@@ -26,8 +26,6 @@ include('../controlador/menu-controller.php');
             margin: 0;
         }
         
-       
-
     </style>   
 
     <title>Menú</title>
