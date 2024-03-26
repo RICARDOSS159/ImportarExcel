@@ -29,7 +29,7 @@ require '../modelo/conexion.php';
               <div class="card-body p-md-5 mx-md-4">
 
                 <div class="text-center">
-                  <img src="logo.png"
+                  <img src="logo.jpg"
                     style="width: 185px;" alt="logo">
                   <h4 class="mt-1 mb-5 pb-1">Invoice facil</h4>
                 </div>

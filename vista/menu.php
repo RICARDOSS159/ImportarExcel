@@ -52,7 +52,7 @@ include('../controlador/menu-controller.php');
             </div>
             <div class="col-lg-6 d-flex align-items-center">
             <div class="text-center">
-                  <img src="logo.png"
+                  <img src="logo.jpg"
                     style="width: 185px;" alt="logo">
                   
                 </div>
