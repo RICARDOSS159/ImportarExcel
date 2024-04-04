@@ -1,0 +1,25 @@
+<td><?php echo $data['fecha']; ?></td>
+              <td><?php echo $data['monto']; ?></td>
+              <td><?php echo '<a href="#" data-toggle="modal" data-target="#imagenModal' . $data['idpago'] . '"><img src="' . $data['ruta_capturas'] . '" alt="" style="max-width: 100px;">';
+               // Modal para mostrar la imagen completa
+               echo '<div class="modal fade" id="imagenModal' . $data['idpago'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+               echo '<div class="modal-dialog" role="document">';
+               echo '<div class="modal-content">';
+               echo '<div class="modal-header">';
+               echo '<h5 class="modal-title" id="exampleModalLabel">Imagen Completa</h5>';
+               echo '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+               //echo '<span aria-hidden="true">&times;</span>';
+               echo '</button>';
+               echo '</div>';
+               echo '<div class="modal-body">';
+               echo '<img src="' . $data['ruta_capturas'] . '" alt="Imagen Completa" style="max-width: 100%; max-height: 80vh;">';
+               echo '</div>';
+               echo '<div class="modal-footer">';
+               echo '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>';
+               echo '</div>';
+               echo '</div>';
+               echo '</div>';
+               echo '</div>';
+              
+             echo'</td>';
+            echo'</tr>';

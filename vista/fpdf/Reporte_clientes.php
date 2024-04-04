@@ -62,9 +62,8 @@ class PDF extends FPDF
       $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
       $this->Cell(28, 10, utf8_decode('RUC'), 1, 0, 'C', 1);
       $this->Cell(40, 10, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-      $this->Cell(25, 10, utf8_decode('CELULAR'), 1, 0, 'C', 1);
       $this->Cell(60, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(25, 10, utf8_decode('MONTO'), 1, 1, 'C', 1);
+      $this->Cell(25, 10, utf8_decode('TIPO DE PAGO'), 1, 1, 'C', 1);
    }
 
    // Pie de página
@@ -95,9 +94,10 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163); //colorBorde
 
-$consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto
-FROM cliente as C 
-INNER JOIN pagos as P on C.id = P.idcliente");
+$consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto,
+P.tipo_pago FROM cliente as C 
+INNER JOIN pagos as P on C.id = P.idcliente
+GROUP BY C.ruc ");
 
 while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {      
    
@@ -106,9 +106,8 @@ $i = $i + 1;
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
 $pdf->Cell(28, 10, utf8_decode($datos_reporte->ruc), 1, 0, 'C', 0);
 $pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
-$pdf->Cell(25, 10, utf8_decode($datos_reporte->celular), 1, 0, 'C', 0);
 $pdf->Cell(60, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
-$pdf->Cell(25, 10, utf8_decode($datos_reporte->monto), 1, 1, 'C', 0);
+$pdf->Cell(25, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
 }
 
 $pdf->Output('Reporte_clientes.pdf', 'I');//nombreDescarga, Visor(I->visualizar - D->descargar)

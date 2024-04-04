@@ -8,6 +8,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     header("Location: login.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>

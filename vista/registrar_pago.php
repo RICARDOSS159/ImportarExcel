@@ -98,6 +98,19 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         <label for="">Foto</label>
         <input class="form-control" type="file" name="imagen" id="imagen" accept=".jpg,.png">
             <br>
+        <label for="">Metodo de pago</label>
+        <select name="met_pago" id="met_pago">
+        <option value="Efectivo">Efectivo</option>
+        <option value="Yape">Yape</option>
+        <option value="Tarjeta">Tarjeta</option>  
+        </select>
+        <br><br>
+        <label for="">Tipo de Pago</label>
+        <select name="tip_pago" id="tip_pago">
+        <option value="Mensual">Mensual</option>
+        <option value="Anual">Anual</option>
+        </select>  
+        <br><br>
         <button type="button" onclick="window.location.href = 'clientes.php';">VOLVER ATRÁS</button>
         <br><br>
         <input type="submit" class="registrar" value="Registrar pago">

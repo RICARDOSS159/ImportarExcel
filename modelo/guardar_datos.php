@@ -36,11 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userId=$_POST['cliente'];
         $monto = $_POST["monto"];
         $fecha=$_POST["fecha"];
+        $met_pago=$_POST["met_pago"];
+        $tip_pago=$_POST["tip_pago"];
 
 
         // Guardar la ruta en la base de datos
-        $consulta = $mysqli->prepare("INSERT INTO pagos (idcliente,fecha,monto, ruta_capturas) VALUES (?, ?, ?, ?)");
-        $consulta->bind_param("isds", $userId,$fecha,$monto, $ruta_destino);
+        $consulta = $mysqli->prepare("INSERT INTO pagos (idcliente,fecha,monto, ruta_capturas,metodo_pago,tipo_pago) 
+        VALUES (?, ?, ?, ?, ?, ?)");
+        $consulta->bind_param("isdsss", $userId,$fecha,$monto, $ruta_destino,$met_pago,$tip_pago);
 
         // Ejecutar la consulta
         if ($consulta->execute()) {
@@ -53,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Cerrar la consulta
         $consulta->close();
     } else {
-        echo "Selecciona una imagen válida.";
+        echo "Selecciona una imagen válida o rellene todo los campos.";
     }
 }
 

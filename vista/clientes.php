@@ -50,7 +50,33 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 <div class="col-md-8">
 <form action="" method="POST">
     
-                            <div class="row">
+            <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+                <label><b>Filtrar por Nombre</b></label>
+                <input type="text" name="nombre" class="form-control" placeholder="Ingrese el nombre">
+            </div>
+            </div>
+            <!--<div class="col-md-4">
+            <div class="form-group">
+                <label><b>Filtrar por Mes</b></label>
+                <select name="mes" class="form-control">
+                    <option value="">Selecciona un mes</option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+        </div>-->
                                 
                                 <div class="col-md-4">
                                     
@@ -97,9 +123,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                <th>RUC</th>
                <th>Nombre</th>
                <th>Celular</th>
-               <th>Fecha de pago</th>
-               <th>Monto</th>
-               <th>Foto</th>
+               <th>Lista de pagos</th>
             </tr>
           </thead>
           <tbody>';
@@ -115,52 +139,39 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
               <td><?php echo $data['ruc']; ?></td>
               <td><?php echo $data['nombre']; ?></td>
               <td><?php echo $data['celular']; ?></td>
-              <td><?php echo $data['fecha']; ?></td>
-              <td><?php echo $data['monto']; ?></td>
-              <td><?php echo '<a href="#" data-toggle="modal" data-target="#imagenModal' . $data['idpago'] . '"><img src="' . $data['ruta_capturas'] . '" alt="" style="max-width: 100px;">';
-               // Modal para mostrar la imagen completa
-               echo '<div class="modal fade" id="imagenModal' . $data['idpago'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
-               echo '<div class="modal-dialog" role="document">';
-               echo '<div class="modal-content">';
-               echo '<div class="modal-header">';
-               echo '<h5 class="modal-title" id="exampleModalLabel">Imagen Completa</h5>';
-               echo '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-               //echo '<span aria-hidden="true">&times;</span>';
-               echo '</button>';
-               echo '</div>';
-               echo '<div class="modal-body">';
-               echo '<img src="' . $data['ruta_capturas'] . '" alt="Imagen Completa" style="max-width: 100%; max-height: 80vh;">';
-               echo '</div>';
-               echo '<div class="modal-footer">';
-               echo '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>';
-               echo '</div>';
-               echo '</div>';
-               echo '</div>';
-               echo '</div>';
-              
-             echo'</td>';
-            echo'</tr>';
-            } 
-            
+              <td><a href="#" class="mostrarPago" data-ruc="<?php echo $data['ruc']; ?>">Mostrar pago</a></td>
+              </tr>
+              <?php }
           }else{
             ?>
-          
-          <tr>
-                                         <td><?php  echo "No se encontraron resultados"; ?></td>
-                                  <?php
-                                    }
-                                
-                            ?>
+          <td><?php  echo "No se encontraron resultados"; ?></td>
+           <?php }?>
           </tbody>
         </table>
-
+                      
+        
 
 
     </div>
   </div>
 
 </div>
-
+<!-- Ventana modal para mostrar detalles del pago -->
+<div class="modal fade" id="modalPagos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalles del Pago</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="detallePago">
+                <!-- Contenido del detalle del pago -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="../js/jquery.min.js"></script>
@@ -192,9 +203,78 @@ inputFecha.max = fechaActual;
     // Establecer la fecha máxima como la fecha actual
     inputFecha.max = fechaActual;
 </script>
+
+<!--<script>
+// Obtén el elemento de la ventana modal
+var modal = document.getElementById('modalPagos');
+// Obtén el elemento span que cierra la ventana modal
+var spanCerrar = document.getElementsByClassName('close')[0];
+
+// Agrega un evento de clic a cada enlace "Mostrar pago"
+var enlacesMostrarPago = document.querySelectorAll('a.mostrarPago');
+enlacesMostrarPago.forEach(function(enlace) {
+  enlace.addEventListener('click', function(event) {
+    event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+    var rucCliente = this.getAttribute('data-ruc'); // Obtiene el RUC del cliente del atributo de datos del enlace
+    mostrarPagos(rucCliente); // Muestra los pagos del cliente en la ventana modal
+  });
+});
+
+// Función para mostrar los pagos de un cliente en la ventana modal
+function mostrarPagos(rucCliente) {
+  // Aquí puedes realizar una petición AJAX al servidor para obtener los pagos del cliente según su RUC
+  // Por ahora, se mostrará un mensaje de ejemplo
+  var detallePago = 'Pagos del cliente con RUC: ' + rucCliente; // Simulación de detalles de pago
+  document.getElementById('detallePago').innerHTML = detallePago; // Muestra los detalles de pago en la ventana modal
+  modal.style.display = 'block'; // Muestra la ventana modal
+}
+
+// Función para cerrar la ventana modal al hacer clic en la X
+spanCerrar.onclick = function() {
+  modal.style.display = 'none';
+}
+
+// Función para cerrar la ventana modal al hacer clic fuera de ella
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+</script>-->
+<script>
+
+    var ultimoModalAbierto = null;
+    $(document).ready(function() {
+    // Función para mostrar los pagos de un cliente en la ventana modal
+    $('.mostrarPago').click(function(e) {
+        e.preventDefault();
+        var rucCliente = $(this).data('ruc');
+        $.ajax({
+            url: '../modelo/obtener_datosxruc.php',
+            type: 'POST',
+            data: { ruc: rucCliente },
+            success: function(response) {
+                $('#detallePago').html(response);
+                ultimoModalAbierto = '#modalPagos';
+                $('#modalPagos').modal('show'); // Mostrar el modal utilizando Bootstrap
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+});
+
+ // Función para cerrar el modal de imagen completa
+ $('.cerrarImagenCompleta').click(function(e) {
+        e.preventDefault();
+        $(ultimoModalAbierto).modal('show'); // Vuelve a abrir el último modal abierto
+    });
+</script>
   </form>
 
   
 
 </body>
+
 </html>
