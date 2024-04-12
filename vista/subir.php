@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <title>iMPORTADOR DE EXCEL</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
   <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../css/cargando.css">
+  <!--<link rel="stylesheet" type="text/css" href="../css/cargando.css">-->
   <link rel="stylesheet" type="text/css" href="../css/cssGenerales.css">
 </head>
 <body>
@@ -88,6 +88,7 @@ se pueda subir correctamente-->
   <?php
   header("Content-Type: text/html;charset=utf-8");
   include('../modelo/conexion.php');
+  include('../modelo/actualizar_cliente.php');
   $sqlClientes = ("SELECT * FROM cliente ORDER BY id ASC");
   $queryData   = mysqli_query($mysqli, $sqlClientes);
   $total_client = mysqli_num_rows($queryData);
@@ -104,6 +105,7 @@ se pueda subir correctamente-->
                <th>RUC</th>
                <th>Nombre</th>
                <th>Celular</th>
+               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +117,13 @@ se pueda subir correctamente-->
               <td><?php echo $data['ruc']; ?></td>
               <td><?php echo $data['nombre']; ?></td>
               <td><?php echo $data['celular']; ?></td>
+              <td><a href="actualizar_cliente.php?id=<?= $data['id']; ?>"class="btn btn-info">Actualizar</a>
+              <form action="../modelo/eliminar_cliente.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este cliente?')">Eliminar</button>
+                    </form>
+            </td>
+              
             </tr>
           <?php } ?>
           </tbody>
