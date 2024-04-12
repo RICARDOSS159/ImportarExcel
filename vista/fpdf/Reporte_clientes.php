@@ -10,6 +10,7 @@ class PDF extends FPDF
    // Cabecera de página
    function Header()
    {
+      
       //include '../../modelo/conexion.php';//llamamos a la conexion BD
 
       //$consulta_info = $conexion->query(" select *from hotel ");//traemos datos de la empresa desde BD
@@ -55,7 +56,7 @@ class PDF extends FPDF
       $this->SetTextColor(228, 100, 0);
       $this->Cell(8); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
-      $this->Cell(90, 10, utf8_decode("Reporte de pagos de $nombre $mes/$anio"), 0, 1, 'C', 0);
+      $this->Cell(90, 10, utf8_decode("Reporte de pagos de $nombre $mes $anio"), 0, 1, 'C', 0);
       $this->Ln(7);
 
       /* CAMPOS DE LA TABLA */
@@ -134,6 +135,7 @@ $pdf->Cell(35, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
 $pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
 $pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
 }
+
 
 
 $pdf->Output('Reporte_clientes.pdf', 'I');//nombreDescarga, Visor(I->visualizar - D->descargar)

@@ -101,7 +101,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                                     <div class="form-group">
                                         <label><b></b></label> <br>
                                       <button type="submit" class="btn btn-primary" name="accion" value="Buscar">Buscar</button>
-                                      <button name="accion" value="Reporte" formaction="fpdf/Reporte_clientes.php" onclick="this.form.target='_blank'; return true;">Generar Reporte PDF</button>
+                                      
                                     </div>
                                 </div>
                                 </div>
@@ -109,6 +109,17 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                             </div>
                             <br>
                         </form>
+                        <form action="fpdf/Reporte_clientes.php" method="POST" target="_blank">
+                             <!-- Campos ocultos para enviar los datos del formulario de búsqueda -->
+    <input type="hidden" name="nombre" value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : ''; ?>">
+    <input type="hidden" name="mes" value="<?php echo isset($_POST['mes']) ? $_POST['mes'] : ''; ?>">
+    <input type="hidden" name="anio" value="<?php echo isset($_POST['anio']) ? $_POST['anio'] : ''; ?>">
+    <input type="hidden" name="from_date" value="<?php echo isset($_POST['from_date']) ? $_POST['from_date'] : ''; ?>">
+    <input type="hidden" name="to_date" value="<?php echo isset($_POST['to_date']) ? $_POST['to_date'] : ''; ?>">
+    
+    <!-- Botón para generar el reporte PDF -->
+    <button name="accion" value="Reporte" class="btn btn-success">Generar Reporte PDF</button>
+</form>
 
                        <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['accion'])) {
