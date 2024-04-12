@@ -2,6 +2,8 @@
 
 require('./fpdf.php');
 
+ob_end_clean();
+
 class PDF extends FPDF
 {
 
@@ -44,13 +46,16 @@ class PDF extends FPDF
       $this->SetFont('Arial', 'B', 10);
       $this->Cell(85, 10, utf8_decode("Sucursal : "), 0, 0, '', 0);
       $this->Ln(10);*/
-
+    
+      $nombre = $_POST['nombre'];
+      $mes=$_POST['mes'];
+      $anio=$_POST['anio'];
       /* TITULO DE LA TABLA */
       //color
       $this->SetTextColor(228, 100, 0);
       $this->Cell(8); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
-      $this->Cell(100, 10, utf8_decode("REPORTE DE PAGO DE CLIENTES"), 0, 1, 'C', 0);
+      $this->Cell(90, 10, utf8_decode("Reporte de pagos de $nombre $mes/$anio"), 0, 1, 'C', 0);
       $this->Ln(7);
 
       /* CAMPOS DE LA TABLA */
@@ -60,10 +65,11 @@ class PDF extends FPDF
       $this->SetDrawColor(163, 163, 163); //colorBorde
       $this->SetFont('Arial', 'B', 11);
       $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
-      $this->Cell(28, 10, utf8_decode('RUC'), 1, 0, 'C', 1);
       $this->Cell(40, 10, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-      $this->Cell(60, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(25, 10, utf8_decode('TIPO DE PAGO'), 1, 1, 'C', 1);
+      $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'L', 1);
+      $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'L', 1);
+      $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1);
+      $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 1, 'C', 1);
    }
 
    // Pie de página
@@ -81,6 +87,7 @@ class PDF extends FPDF
 }
 
 include '../../modelo/conexion.php';
+include '../../modelo/filtrar_mes.php';
 //require '../../funciones/CortarCadena.php';
 /* CONSULTA INFORMACION DEL HOSPEDAJE */
 //$consulta_info = $conexion->query(" select *from hotel ");
@@ -94,20 +101,41 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163); //colorBorde
 
-$consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto,
-P.tipo_pago FROM cliente as C 
+$nombre = isset($_POST['nombre']) ? $mysqli->real_escape_string($_POST['nombre']) : '';
+$mes = isset($_POST['mes']) ? $mysqli->real_escape_string($_POST['mes']) : '';
+$anio = isset($_POST['anio']) ? $mysqli->real_escape_string($_POST['anio']) : '';
+
+if (!empty($nombre) && empty($mes) && empty($anio)) {
+$consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto,
+P.tipo_pago,P.metodo_pago FROM cliente as C 
 INNER JOIN pagos as P on C.id = P.idcliente
-GROUP BY C.ruc ");
+WHERE C.nombre='$nombre'");
+
+}elseif (!empty($anio) && empty($mes)) {
+   // Si se proporciona una fecha, ejecuta la consulta para obtener los pagos realizados en esa fecha
+   $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto, P.tipo_pago, P.metodo_pago FROM cliente as C INNER JOIN pagos as P on C.id = P.idcliente WHERE YEAR(P.fecha)='$anio'");
+}elseif(!empty($anio) && !empty($mes) && empty($nombre)){
+  $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
+ P.metodo_pago,P.tipo_pago     
+ FROM cliente AS C 
+ INNER JOIN pagos AS P ON C.id = P.idcliente 
+ WHERE MONTH(P.fecha) = $mes AND YEAR(P.fecha) =$anio");
+}
+
 
 while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {      
    
 $i = $i + 1;
 /* TABLA */
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
-$pdf->Cell(28, 10, utf8_decode($datos_reporte->ruc), 1, 0, 'C', 0);
-$pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
-$pdf->Cell(60, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
-$pdf->Cell(25, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
+$pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'L', 0);
+$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'L', 0);
+$pdf->Cell(35, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
+$pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
+$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
 }
 
+
 $pdf->Output('Reporte_clientes.pdf', 'I');//nombreDescarga, Visor(I->visualizar - D->descargar)
+
+?>
