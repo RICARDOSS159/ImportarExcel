@@ -1,7 +1,7 @@
 <?php
 
 require('./fpdf.php');
-
+setlocale(LC_TIME, 'spanish');
 ob_end_clean();
 
 class PDF extends FPDF
@@ -49,14 +49,21 @@ class PDF extends FPDF
       $this->Ln(10);*/
     
       $nombre = $_POST['nombre'];
-      $mes=$_POST['mes'];
+      $mes=isset($_POST['mes']) ? intval($_POST['mes']) : null;
       $anio=$_POST['anio'];
+
+      if ($mes !== null && $mes >= 1 && $mes<= 12) {
+         // Convertir el número del mes en su nombre correspondiente en español
+         $mes_nombre = strftime("%B", mktime(0, 0, 0, $mes, 1));
+     } else {
+         $mes_nombre = ''; // Opcional: definir un valor predeterminado si el mes no está definido
+     }
       /* TITULO DE LA TABLA */
       //color
       $this->SetTextColor(228, 100, 0);
       $this->Cell(8); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
-      $this->Cell(90, 10, utf8_decode("Reporte de pagos de $nombre $mes $anio"), 0, 1, 'C', 0);
+      $this->Cell(90, 10, utf8_decode("Reporte de pagos de $nombre $mes_nombre $anio"), 0, 1, 'C', 0);
       $this->Ln(7);
 
       /* CAMPOS DE LA TABLA */
