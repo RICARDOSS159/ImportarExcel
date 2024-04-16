@@ -31,16 +31,17 @@ $mysqli= mysqli_connect($servidor,$user,$contrasenia,$database) or die(mysqli_co
     $to_date = $_POST['to_date'];
     
     // Consulta solo para filtrar por el rango de fechas
-    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas 
+    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
+              P.metodo_pago,P.tipo_pago 
               FROM cliente AS C 
               INNER JOIN pagos AS P ON C.id = P.idcliente 
-              WHERE P.fecha BETWEEN '$from_date' AND '$to_date' ";
+              WHERE P.fecha BETWEEN '$from_date' AND '$to_date' order by P.fecha ";
 }else{
     // Si no se proporcionó ni un nombre ni un rango de fechas, mostrar todos los datos
     $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
               P.metodo_pago 
               FROM cliente AS C 
-              INNER JOIN pagos AS P ON C.id = P.idcliente group by c.ruc";
+              INNER JOIN pagos AS P ON C.id = P.idcliente group by c.ruc order by C.nombre";
 }
 
 
@@ -66,7 +67,7 @@ if(isset($_POST['mes']) && !empty($_POST['mes'])&& isset($_POST['anio']) && !emp
     $anio = $_POST['anio'];
     // Consulta filtrada por mes
     $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-              P.metodo_pago     
+              P.metodo_pago,P.tipo_pago     
               FROM cliente AS C 
               INNER JOIN pagos AS P ON C.id = P.idcliente 
               WHERE MONTH(P.fecha) = $mes AND YEAR(P.fecha) =$anio
@@ -76,30 +77,40 @@ if(isset($_POST['mes']) && !empty($_POST['mes'])&& isset($_POST['anio']) && !emp
 }elseif(isset($_POST['anio']) && !empty($_POST['anio'])){
     $anio = $_POST['anio'];
     $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-              P.metodo_pago     
+              P.metodo_pago,P.tipo_pago     
               FROM cliente AS C 
               INNER JOIN pagos AS P ON C.id = P.idcliente 
               WHERE YEAR(P.fecha) =$anio
               ";
 }
 
-if(isset($_POST['nombre']) && !empty($_POST['nombre']) && empty($_POST['from_date']) && empty($_POST['to_date'])) {
+if(isset($_POST['nombre']) && !empty($_POST['nombre']) && empty($_POST['from_date']) && empty($_POST['to_date']) && empty($_POST['anio'])) {
     $nombre = $_POST['nombre'];
     // Consulta para filtrar por nombre
     $query = "SELECT DISTINCT id, ruc, nombre, celular 
               FROM cliente 
               WHERE nombre LIKE '%$nombre%'";
  
-}elseif(isset($_POST['nombre']) && !empty($_POST['nombre']) && isset($_POST['from_date']) && isset($_POST['to_date'])) {
+}elseif(isset($_POST['nombre']) && !empty($_POST['nombre']) && isset($_POST['from_date']) && isset($_POST['to_date'])&& empty($_POST['anio']) ) {
     $nombre=$_POST['nombre'];
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
     //Consulta para filtrar por nombre
-    $query="SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha
+    $query="SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha,P.metodo_pago,P.tipo_pago
     FROM cliente AS C 
     INNER JOIN pagos AS P ON C.id = P.idcliente 
     WHERE C.nombre = '$nombre' and P.fecha BETWEEN '$from_date' AND '$to_date'";
  
+}elseif(isset($_POST['nombre']) && isset($_POST['anio'])){
+    $nombre=$_POST['nombre'];
+    $anio = $_POST['anio'];
+    //Consulta para filtrar por nombre
+    $query="SELECT C.id,C.nombre,P.fecha,P.monto,P.metodo_pago,P.tipo_pago
+    FROM cliente AS C 
+    INNER JOIN pagos AS P ON C.id = P.idcliente 
+    WHERE C.nombre ='$nombre' and YEAR(P.fecha)=$anio";
+
+    
 }
 
 
