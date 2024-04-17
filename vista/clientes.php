@@ -176,13 +176,16 @@ json_encode(['data' => $query_run, 'filtro_por_mes' => $filtro_por_mes]);
                <th>Fecha</th>';
                 echo '<th>Metodo de Pago</th>';
                 echo '<th>Tipo de Pago</th>';
+                echo '<th>Mes Pagado</th>';
                }
                if($filtro_por_nombre_anio){
                 echo '<th>#</th>
                 <th>Fecha</th>
                 <th>Monto</th>
                 <th>Metodo de Pago</th>
-                <th>Tipo de Pago</th>';
+                <th>Tipo de Pago</th>
+                <th>Mes Pagado</th>';
+                
                }
                /*if(ISSET($filtro_por_mes) && ISSET($filtro_por_nombre)){
                 echo '<th>Lista de pagos</th>';
@@ -191,16 +194,17 @@ json_encode(['data' => $query_run, 'filtro_por_mes' => $filtro_por_mes]);
                 echo'<th>#</th>
                <th>RUC</th>
                <th>Nombre</th>
-               <th>Celular</th>';
-                echo '<th>Fecha</th>
-                <th>Metodo Pago</th>
-               <th>Tipo de Pago</th>';
+               <th>Fecha</th>';
+                echo '<th>Metodo Pago</th>
+                <th>Tipo de Pago</th>
+               <th>Mes Pagado</th>';
                }
                if($filtro_por_nombre_rango){
                 echo'<th>#</th>
                  <th>Fecha</th>
                 <th>Metodo Pago</th>
-               <th>Tipo de Pago</th>';
+               <th>Tipo Pago</th>
+               <th>Mes Pagado</th>';
                }
                // Verificar si no se está filtrando por mes para incluir la columna "Mostrar pago"
                if ($filtro_por_nombre &&!$filtro_por_rango && !$filtro_por_nombre_anio||$sin_filtro) {
@@ -232,27 +236,30 @@ json_encode(['data' => $query_run, 'filtro_por_mes' => $filtro_por_mes]);
                 <td><?php echo $data['fecha']; ?></td>
               <?php echo '<td>'.$data['metodo_pago'].'</td>';
               echo '<td>'.$data['tipo_pago'].'</td>';
+              echo '<td>'.$data['mes_correspon'].'</td>';
                }?>
                <?php if ($filtro_por_nombre_anio) {?>
                 <?php echo '<td>'.$data['fecha'].'</td>';
                 echo '<td>'.$data['monto'].'</td>';  
                 echo '<td>'.$data['metodo_pago'].'</td>';
               echo '<td>'.$data['tipo_pago'].'</td>';
+              echo '<td>'.$data['mes_correspon'].'</td>';
                }?>
 
               <?php if ($filtro_por_rango && !$filtro_por_nombre) {?>
                 <td><?php echo $data['ruc']; ?></td>
                 <td><?php echo $data['nombre']; ?></td>
-                <td><?php echo $data['celular']; ?></td>
               <?php echo '<td>'.$data['fecha'].'</td>';
               echo '<td>'.$data['metodo_pago'].'</td>';
               echo '<td>'.$data['tipo_pago'].'</td>';
+              echo '<td>'.$data['mes_correspon'].'</td>';
                }?>
                <?php if ($filtro_por_nombre_rango) {?>
                 
               <?php echo '<td>'.$data['fecha'].'</td>';
               echo '<td>'.$data['metodo_pago'].'</td>';
               echo '<td>'.$data['tipo_pago'].'</td>';
+              echo '<td>'.$data['mes_correspon'].'</td>';
                }?>
               <?php if ($filtro_por_nombre &&!$filtro_por_rango &&!$filtro_por_nombre_anio|| $sin_filtro ) {?>
                  <td><?php echo $data['ruc']; ?></td>
@@ -271,9 +278,10 @@ json_encode(['data' => $query_run, 'filtro_por_mes' => $filtro_por_mes]);
            <?php }?>
 
             
-<!--Imprime la consulta SQL que estás ejecutando
-echo "Consulta SQL ejecutada: " . $query;-->
-
+<?php
+//Imprime la consulta SQL que estás ejecutando
+echo "Consulta SQL ejecutada: " . $query;
+?>
           
           </tbody>
         </table>

@@ -109,6 +109,22 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         <select name="tip_pago" id="tip_pago">
         <option value="Mensual">Mensual</option>
         <option value="Anual">Anual</option>
+        </select>
+        <br><br>
+        <label for="">Mes correspondiente</label>
+        <select name="mes_pago" id="mes_pago">
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
         </select>  
         <br><br>
         <button type="button" onclick="window.location.href = 'clientes.php';">VOLVER ATRÁS</button>

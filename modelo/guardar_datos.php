@@ -38,12 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fecha=$_POST["fecha"];
         $met_pago=$_POST["met_pago"];
         $tip_pago=$_POST["tip_pago"];
+        $mes_pago=$_POST["mes_pago"];
 
 
         // Guardar la ruta en la base de datos
-        $consulta = $mysqli->prepare("INSERT INTO pagos (idcliente,fecha,monto, ruta_capturas,metodo_pago,tipo_pago) 
-        VALUES (?, ?, ?, ?, ?, ?)");
-        $consulta->bind_param("isdsss", $userId,$fecha,$monto, $ruta_destino,$met_pago,$tip_pago);
+        $consulta = $mysqli->prepare("INSERT INTO pagos (idcliente,fecha,monto, ruta_capturas,metodo_pago,tipo_pago,mes_correspon) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $consulta->bind_param("isdssss", $userId,$fecha,$monto, $ruta_destino,$met_pago,$tip_pago,$mes_pago);
 
         // Ejecutar la consulta
         if ($consulta->execute()) {

@@ -14,7 +14,7 @@ if(isset($_POST['ruc'])) {
 
     // Consulta SQL para obtener los datos del cliente y sus pagos
     $consulta = "SELECT C.ruc, C.nombre, C.celular,P.idpago,P.fecha, P.monto,P.ruta_capturas,
-                 P.metodo_pago,P.tipo_pago 
+                 P.metodo_pago,P.tipo_pago,P.mes_correspon 
                  FROM cliente AS C
                  INNER JOIN pagos AS P ON C.id = P.idcliente
                  WHERE C.ruc = '$rucCliente' ORDER BY fecha ASC";
@@ -25,7 +25,7 @@ if(isset($_POST['ruc'])) {
     if(mysqli_num_rows($resultado) > 0) {
         // Construir la tabla HTML con los datos del cliente y sus pagos
         $tabla = '<table class="table">';
-        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th></tr></thead>';
+        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th><th>Mes Pagado</th></tr></thead>';
         $tabla .= '<tbody>';
 
         while($fila = mysqli_fetch_assoc($resultado)) {
@@ -54,6 +54,7 @@ if(isset($_POST['ruc'])) {
             $tabla .= '</div>';
             $tabla .= '<td>'.$fila['metodo_pago'].'</td>';
             $tabla .= '<td>'.$fila['tipo_pago'].'</td>';
+            $tabla .= '<td>'.$fila['mes_correspon'].'</td>';
             $tabla .= '</tr>';
         }
 
