@@ -62,7 +62,7 @@ class PDF extends FPDF
      }
      $titulo="Reporte de pagos";
      if (!empty($desde) && !empty($hasta)) {
-      $titulo .= "desde $desde hasta $hasta";
+      $titulo .= " desde $desde hasta $hasta";
      }
      if(!empty($nombre)){
       $titulo .= " de $nombre";
@@ -154,6 +154,13 @@ if (!empty($nombre) && !empty($desde) && !empty($hasta) && empty($anio) && empty
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
    WHERE C.nombre = '$nombre' and YEAR(P.fecha)=$anio order by P.fecha ");
+
+}elseif(!empty($desde) && !empty($hasta)&& empty($nombre) && empty($mes)&& empty($anio)){
+   $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
+   P.metodo_pago,P.tipo_pago     
+   FROM cliente AS C 
+   INNER JOIN pagos AS P ON C.id = P.idcliente 
+   WHERE P.fecha BETWEEN '$desde' AND '$hasta' order by P.fecha ");
 
 }elseif (!empty($anio) && empty($mes)) {
    // Si se proporciona una fecha, ejecuta la consulta para obtener los pagos realizados en esa fecha

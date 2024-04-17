@@ -57,7 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Cerrar la consulta
         $consulta->close();
     } else {
-        echo "Selecciona una imagen válida o rellene todo los campos.";
+        echo "<script>alert('Selecciona una imagen válida o rellena todos los campos.');window.location.href = '../vista/registrar_pago.php';</script>";
+        
     }
 }
 

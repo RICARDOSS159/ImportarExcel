@@ -82,6 +82,13 @@ if(isset($_POST['mes']) && !empty($_POST['mes'])&& isset($_POST['anio']) && !emp
               INNER JOIN pagos AS P ON C.id = P.idcliente 
               WHERE YEAR(P.fecha) =$anio order by C.nombre
               ";
+}elseif(isset($_POST['mes']) && !empty($_POST['mes'])){
+    $mes=$_POST['mes'];
+    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
+              P.metodo_pago,P.tipo_pago,P.mes_correspon     
+              FROM cliente AS C 
+              INNER JOIN pagos AS P ON C.id = P.idcliente 
+              WHERE MONTH(P.fecha) = $mes";
 }
 
 if(isset($_POST['nombre']) && !empty($_POST['nombre']) && empty($_POST['from_date']) && empty($_POST['to_date']) && empty($_POST['anio'])) {

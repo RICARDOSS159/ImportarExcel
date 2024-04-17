@@ -278,10 +278,10 @@ json_encode(['data' => $query_run, 'filtro_por_mes' => $filtro_por_mes]);
            <?php }?>
 
             
-<?php
-//Imprime la consulta SQL que estás ejecutando
-echo "Consulta SQL ejecutada: " . $query;
-?>
+
+<!--Imprime la consulta SQL que estás ejecutando
+echo "Consulta SQL ejecutada: " . $query;-->
+
           
           </tbody>
         </table>
