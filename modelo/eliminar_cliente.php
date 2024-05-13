@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la consulta
     if (mysqli_multi_query($mysqli, $sqlEliminar)) {
-        header("Location:../vista/subir.php");
+        header("Location:../vista/lista_clientes.php");
     } else {
         echo "Error al eliminar el cliente: " . mysqli_error($mysqli);
     }

@@ -13,7 +13,7 @@ if(isset($_POST['ruc'])) {
     $rucCliente = $_POST['ruc'];
 
     // Consulta SQL para obtener los datos del cliente y sus pagos
-    $consulta = "SELECT C.ruc, C.nombre, C.celular,P.idpago,P.fecha, P.monto,P.ruta_capturas,
+    $consulta = "SELECT C.ruc, C.nombre, C.celular,P.idpago,DATE_FORMAT(P.fecha, '%d/%m/%Y') AS fecha_form_pago, P.monto,P.ruta_capturas,
                  P.metodo_pago,P.tipo_pago,P.mes_correspon 
                  FROM cliente AS C
                  INNER JOIN pagos AS P ON C.id = P.idcliente
@@ -30,7 +30,7 @@ if(isset($_POST['ruc'])) {
 
         while($fila = mysqli_fetch_assoc($resultado)) {
             $tabla .= '<tr>';
-            $tabla .= '<td>' . $fila['fecha'] . '</td>';
+            $tabla .= '<td>' . $fila['fecha_form_pago'] . '</td>';
             $tabla .= '<td>' . $fila['monto'] . '</td>';
             $tabla .= '<td><a href="#" data-toggle="modal" data-target="#imagenModal' . $fila['idpago'] . '"><img src="' . $fila['ruta_capturas'] . '" alt="" style="max-width: 100px;"></a></td>';
             // Modal para mostrar la imagen completa

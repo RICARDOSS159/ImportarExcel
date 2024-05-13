@@ -20,6 +20,9 @@ foreach ($lineas as $linea) {
         $ruc               = !empty($datos[0])  ? ($datos[0]) : '';
 		$nombre            = !empty($datos[1])  ? ($datos[1]) : '';
         $celular           = !empty($datos[2])  ? ($datos[2]) : '';
+        $direccion         = !empty($datos[3])  ? ($datos[3]) : '';
+        $fecha_ingr        = !empty($datos[4])  ? date('Y-m-d', strtotime(str_replace('/', '-', $datos[4]))) : '';
+        $fecha_actv        = !empty($datos[5])  ? date('Y-m-d', strtotime(str_replace('/', '-', $datos[5]))) : '';
        
 if( !empty($ruc) ){
     $checkemail_duplicidad = ("SELECT ruc FROM cliente WHERE ruc='".($ruc)."' ");
@@ -33,12 +36,18 @@ if ( $cant_duplicidad == 0 ) {
 $insertarData = "INSERT INTO cliente( 
    ruc,
    nombre,
-   celular
+   celular,
+   direccion,
+   fecha_ingreso,
+   fecha_activacion
     
 ) VALUES(
     '$ruc',
     '$nombre',
-    '$celular'
+    '$celular',
+    '$direccion',
+    '$fecha_ingr',
+    '$fecha_actv'
 )";
 mysqli_query($mysqli, $insertarData);
         
@@ -48,7 +57,10 @@ else{
     $updateData =  ("UPDATE cliente SET 
         ruc='" .$ruc. "',
 		nombre='" .$nombre. "',
-        celular='" .$celular. "'  
+        celular='" .$celular. "',
+        direccion=  '" .$direccion. "',
+        fecha_ingreso='" .$fecha_ingr. "',
+        fecha_activacion='" .$fecha_actv. "'
         WHERE ruc='".$ruc."'
     ");
     $result_update = mysqli_query($mysqli, $updateData);
@@ -58,6 +70,6 @@ else{
  $i++;
 }
 
-header("Location:../vista/subir.php");
+header("Location:../vista/lista_clientes.php");
 ?>
  

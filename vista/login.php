@@ -40,30 +40,35 @@ require '../modelo/conexion.php';
                  <?php
                     session_start();
                     //VERIFICAR QUE LOS CAMPOS NO ESTEN VACIOS
-                    if(!empty($_POST['btningresar'])){
-                      if(empty($_POST['username']) and empty($_POST['contrasenia'])){
-                      echo '<div class="alert alert-danger">LOS CAMPOS ESTAN VACIOS</div>';
-                      }else{
+                    if (!empty($_POST['btningresar'])) {
+                      if (empty($_POST['username']) || empty($_POST['contrasenia'])) {
+                          echo '<div class="alert alert-danger">LOS CAMPOS ESTAN VACIOS</div>';
+                      } else {
                           // Recuperar las credenciales del formulario
-                            $username = $_POST['username'];
-                            $password = $_POST['contrasenia'];
-                            //$sql =$mysqli->query( "SELECT * FROM usuario WHERE usuario = '$username' AND contrasenia = '$password'");
-                            $sql = "SELECT * FROM usuario WHERE BINARY usuario = '$username' AND BINARY contrasenia = '$password'";
-                            $result = $mysqli->query($sql);
-                            if($datos=$result->fetch_object()){
-                              $_SESSION['username']=$datos->usuario;
-                              $_SESSION['contrasenia']=$datos->contrasenia;
-                              header("Location:menu.php");
-                             
-                            }else{
+                          $username = $_POST['username'];
+                          $password = $_POST['contrasenia'];
+                  
+                          // Consulta para verificar las credenciales y obtener el ID del usuario
+                          $sql = "SELECT id_usuario, usuario, contrasenia FROM usuario WHERE BINARY usuario = '$username' AND BINARY contrasenia = '$password'";
+                          $result = $mysqli->query($sql);
+                  
+                          if ($result->num_rows > 0) {
+                              $datos = $result->fetch_object();
+                              // Establecer las variables de sesión
+                              $_SESSION['user_id'] = $datos->id_usuario;
+                              $_SESSION['username'] = $datos->usuario;
+                              $_SESSION['contrasenia'] = $datos->contrasenia;
+                              header("Location: menu-plantilla.php");
+                              exit();
+                          } else {
                               echo '<div class="alert alert-danger">CREDENCIALES INVALIDAS O CAMPOS INCOMPLETOS</div>';
-                            }
+                          }
                       }
                   }
                   
 
                   ?>
-
+                  <input type="hidden" name="id">
                   <label class="form-label" for="form2Example11">Nombre de usuario</label>
                   <div class="form-outline mb-4">
                     <input type="text" id="form2Example11" class="form-control"

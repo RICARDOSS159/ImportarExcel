@@ -88,20 +88,21 @@ class PDF extends FPDF
       $this->SetDrawColor(163, 163, 163); //colorBorde
       $this->SetFont('Arial', 'B', 11);
       if ($nombre !== null && !empty($nombre)) {
-      $this->Cell(20); // Movernos a la derecha
-      $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
-      $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'L', 1);
-      $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'L', 1);
-      $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 1, 'C', 1);
+        
+         $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
+         $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(30, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
       }
       else{
       $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
-      $this->Cell(40, 10, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-      $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'L', 1);
-      $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'L', 1);
-      $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 1, 'C', 1);
+      $this->Cell(40, 10, utf8_decode('EMPRESA'), 1, 0, 'C', 1);
+      $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1);
+      $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1);
+      $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1);
+      $this->Cell(30, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
       }
    }
 
@@ -142,7 +143,7 @@ $hasta=isset($_POST['to_date']) ? $mysqli->real_escape_string($_POST['to_date'])
 
 if (!empty($nombre) && !empty($desde) && !empty($hasta) && empty($anio) && empty($mes)) {
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-   P.metodo_pago,P.tipo_pago     
+   P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
    WHERE C.nombre = '$nombre' and P.fecha BETWEEN '$desde' AND '$hasta' order by P.fecha ");
@@ -150,60 +151,64 @@ if (!empty($nombre) && !empty($desde) && !empty($hasta) && empty($anio) && empty
 
 }elseif(!empty($nombre) && !empty($anio)&& empty($desde) && empty($hasta)&& empty($mes)){
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-   P.metodo_pago,P.tipo_pago     
+   P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
    WHERE C.nombre = '$nombre' and YEAR(P.fecha)=$anio order by P.fecha ");
 
 }elseif(!empty($desde) && !empty($hasta)&& empty($nombre) && empty($mes)&& empty($anio)){
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-   P.metodo_pago,P.tipo_pago     
+   P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
    WHERE P.fecha BETWEEN '$desde' AND '$hasta' order by P.fecha ");
 
 }elseif (!empty($anio) && empty($mes)) {
    // Si se proporciona una fecha, ejecuta la consulta para obtener los pagos realizados en esa fecha
-   $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto, P.tipo_pago, P.metodo_pago FROM cliente as C INNER JOIN pagos as P on C.id = P.idcliente
-    WHERE YEAR(P.fecha)='$anio'");
+   $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto, P.tipo_pago, P.metodo_pago,P.mes_correspon
+    FROM cliente as C INNER JOIN pagos as P on C.id = P.idcliente
+    WHERE YEAR(P.fecha)='$anio' order by C.nombre");
 }elseif(!empty($anio) && !empty($mes) && empty($nombre)){
   $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
- P.metodo_pago,P.tipo_pago     
+ P.metodo_pago,P.tipo_pago,P.mes_correspon     
  FROM cliente AS C 
  INNER JOIN pagos AS P ON C.id = P.idcliente 
  WHERE MONTH(P.fecha) = $mes AND YEAR(P.fecha) =$anio");
  
 }elseif(!empty($nombre) && empty($mes) && empty($anio)){
    $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto,
-P.tipo_pago,P.metodo_pago FROM cliente as C 
+P.tipo_pago,P.metodo_pago,P.mes_correspon FROM cliente as C 
 INNER JOIN pagos as P on C.id = P.idcliente
 WHERE C.nombre='$nombre' order by P.fecha");
 }else{
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
-   P.metodo_pago,P.tipo_pago     
+   P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
-   INNER JOIN pagos AS P ON C.id = P.idcliente ORDER BY P.fecha");
+   INNER JOIN pagos AS P ON C.id = P.idcliente ORDER BY C.nombre");
 }
 
 if ($consulta_reporte_clientes->num_rows > 0) {
 while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {      
-   
+   $fecha = $datos_reporte->fecha;
+
+   // Formatear la fecha al formato "DD/MM/YYYY"
+   $fecha_formateada = date('d/m/Y', strtotime($fecha));   
 $i = $i + 1;
 /* TABLA */
 if ($nombre !== null && !empty($nombre)) {
-$pdf->Cell(20); // Movernos a la derecha
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
-$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'L', 0);
-$pdf->Cell(35, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
+$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
+$pdf->Cell(35, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
 $pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
+$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
+$pdf->Cell(30, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
 }else{
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
-$pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'L', 0);
-$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'L', 0);
-$pdf->Cell(35, 10, utf8_decode($datos_reporte->fecha), 1, 0, 'C', 0);
-$pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 1, 'C', 0);
+$pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
+$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
+$pdf->Cell(35, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
+$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
+$pdf->Cell(30, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
 }
 }
 

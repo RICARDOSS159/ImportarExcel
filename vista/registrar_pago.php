@@ -141,5 +141,37 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     });
 </script>
 
+<script>
+    document.getElementById('tip_pago').addEventListener('change', function() {
+        var tipoPago = this.value;
+        var mesPagoSelect = document.getElementById('mes_pago');
+
+        if (tipoPago === 'Anual') {
+            // Limpiar opciones y agregar una única opción para todo el año
+            mesPagoSelect.innerHTML = '';
+            var option = document.createElement('option');
+            option.text = 'Un año completo';
+            option.value = 'Un año completo';
+            mesPagoSelect.appendChild(option);
+        } else {
+            // Restablecer las opciones mensuales
+            mesPagoSelect.innerHTML = `
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+            `;
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -8,22 +8,7 @@ $mysqli= mysqli_connect($servidor,$user,$contrasenia,$database) or die(mysqli_co
 
 
 
-/*if(isset($_POST['from_date']) && isset($_POST['to_date']))
-{
-    $from_date = $_POST['from_date'];
-    $to_date = $_POST['to_date'];
 
-    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas 
-    FROM cliente as C 
-    INNER JOIN pagos as P on C.id = P.idcliente WHERE P.fecha BETWEEN '$from_date' AND '$to_date'
-    ";
-}else{
-    // Consulta sin filtrar por fecha
-    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas 
-              FROM cliente as C 
-              INNER JOIN pagos as P on C.id = P.idcliente GROUP BY C.ruc";
-
-}*/
 
  // Si no se proporcionó un nombre, pero sí un rango de fechas
  if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
@@ -118,6 +103,11 @@ if(isset($_POST['nombre']) && !empty($_POST['nombre']) && empty($_POST['from_dat
     FROM cliente AS C 
     INNER JOIN pagos AS P ON C.id = P.idcliente 
     WHERE C.nombre='$nombre' and YEAR(P.fecha)=$anio";
+}elseif(empty($_POST['nombre']) && empty($_POST['anio']) && empty($_POST['mes']) && empty($_POST['from_date']) && empty($_POST['to_date'])){
+    $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
+              P.metodo_pago 
+              FROM cliente AS C 
+              INNER JOIN pagos AS P ON C.id = P.idcliente group by c.ruc order by C.nombre";
 }
 
 

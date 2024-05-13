@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Datos adicionales
         $userId=$_POST['cliente'];
         $monto = $_POST["monto"];
-        $fecha=$_POST["fecha"];
+        $fecha=$_POST["fecha_pago"];
         $met_pago=$_POST["met_pago"];
         $tip_pago=$_POST["tip_pago"];
         $mes_pago=$_POST["mes_pago"];
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Ejecutar la consulta
         if ($consulta->execute()) {
             
-            header("Location:../vista/clientes.php");
+            header("Location:../vista/lista_pagos.php");
         } else {
             echo "Error al subir la imagen: " . $consulta->error;
         }
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Cerrar la consulta
         $consulta->close();
     } else {
-        echo "<script>alert('Selecciona una imagen válida o rellena todos los campos.');window.location.href = '../vista/registrar_pago.php';</script>";
+        echo "<script>alert('Selecciona una imagen válida o rellena todos los campos.');window.location.href = '../vista/nuevo_registro_pago.php';</script>";
         
     }
 }

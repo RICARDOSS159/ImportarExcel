@@ -75,7 +75,7 @@ se pueda subir correctamente-->
       
       </form>
       <div class="text-center mt-3">
-      <button type="button" class="btn btn-secondary" onclick="window.location.href = 'menu.php';">VOLVER ATRÁS</button>
+      <button type="button" class="btn btn-secondary" onclick="window.location.href = 'menu-plantilla.php';">VOLVER ATRÁS</button>
       </div>
     </div>
     
@@ -93,7 +93,10 @@ se pueda subir correctamente-->
   $queryData   = mysqli_query($mysqli, $sqlClientes);
   $total_client = mysqli_num_rows($queryData);
   ?>
-
+       <div class="text-center">
+       <button class="btn btn-success" onclick="window.location.href = 'nuevo_cliente.php';">Agregar nuevo cliente</button>
+       </div>
+       <br><br>
       <h6 class="text-center">
         Lista de Clientes <strong>(<?php echo $total_client; ?>)</strong>
       </h6>

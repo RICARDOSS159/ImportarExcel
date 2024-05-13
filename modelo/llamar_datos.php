@@ -11,7 +11,7 @@ $mysqli= mysqli_connect($servidor,$user,$contrasenia,$database) or die(mysqli_co
 $userId = isset($_POST['id']) && is_numeric($_POST['id']) ? $_POST['id'] : null;
 
 // Consulta SQL para obtener los datos del usuario
-$recibirdatos = "SELECT nombre,celular FROM cliente WHERE id = '$userId'";
+$recibirdatos = "SELECT nombre,celular,direccion FROM cliente WHERE id = '$userId'";
 $resultadoRecibido = $mysqli->query($recibirdatos);
 
 
@@ -23,7 +23,8 @@ if ($resultadoRecibido->num_rows > 0) {
     // Crear un array con los datos del usuario
     $DatosUsuario = array(
         'nombre' => $row['nombre'],
-        'celular' => $row['celular']
+        'celular' => $row['celular'],
+        'direccion'=>$row['direccion']
     );
 
     // Devolver los datos en formato JSON
