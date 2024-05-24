@@ -199,13 +199,14 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
               </div>
               <br>
               <div class="text-center d-flex justify-content-center">
-                  <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado.php';">Actualizar estado de pagos </button>
+                  <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_anual.php';">Actualizar estado de pagos Anual</button>
+                  <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_mensual.php';" style="margin-left:10px">Actualizar estado de pagos Mensual </button>
                   <button class="btn btn-success" onclick="window.location.href = 'nuevo_cliente.php';" style="margin-left:10px">Agregar nuevo cliente</button>
                   <form action="fpdf/Reporte_clientes_con_deuda.php" method="POST" target="_blank" style="margin-left:10px">
-                  <button name="accion" value="Reporte" class="btn btn-success float-right">Generar Reporte de clientes con pago pendiente</button>
+                  <button name="accion" value="Reporte" class="btn btn-info float-right">Generar Reporte de clientes con pago pendiente</button>
                 </form>
                 <form action="fpdf/Reporte_clientes_sin_deuda.php" method="POST" target="_blank" style="margin-left:10px">
-                  <button name="accion" value="Reporte" class="btn btn-success">Generar Reporte de clientes con pagos al dia</button>
+                  <button name="accion" value="Reporte" class="btn btn-info">Generar Reporte de clientes con pagos al dia</button>
                 </form>
                 </div>
               <br>
