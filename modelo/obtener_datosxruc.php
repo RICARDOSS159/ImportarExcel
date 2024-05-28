@@ -25,7 +25,7 @@ if(isset($_POST['ruc'])) {
     if(mysqli_num_rows($resultado) > 0) {
         // Construir la tabla HTML con los datos del cliente y sus pagos
         $tabla = '<table class="table">';
-        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th><th>Mes Pagado</th></tr></thead>';
+        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th><th>Mes Pagado</th><th>Comprobante</th></tr></thead>';
         $tabla .= '<tbody>';
 
         while($fila = mysqli_fetch_assoc($resultado)) {
@@ -55,6 +55,7 @@ if(isset($_POST['ruc'])) {
             $tabla .= '<td>'.$fila['metodo_pago'].'</td>';
             $tabla .= '<td>'.$fila['tipo_pago'].'</td>';
             $tabla .= '<td>'.$fila['mes_correspon'].'</td>';
+            $tabla .= '<td><a href="fpdf/Reporte_clientes_sin_deuda.php" target="_blank" class="btn btn-primary">Generar reporte</a></td>';
             $tabla .= '</tr>';
         }
 

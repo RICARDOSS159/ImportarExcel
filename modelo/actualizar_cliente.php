@@ -11,14 +11,17 @@ $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
 $fecha_ingreso = isset($_POST['fecha_ingreso']) ? $_POST['fecha_ingreso'] : '';
 $fecha_activacion = isset($_POST['fecha_activacion']) ? $_POST['fecha_activacion'] : '';
 $estado_pago=isset($_POST['estado_pago']) ? $_POST['estado_pago'] : '';
+$fecha_pendiente=isset($_POST['fecha_tiempo_pendiente']) ? $_POST['fecha_tiempo_pendiente'] : '';
 
 $fecha_ingreso_formato = date("Y-m-d", strtotime($fecha_ingreso));
 $fecha_activa_formato = date("Y-m-d", strtotime($fecha_activacion));
 
 $sqlActualizar="UPDATE cliente set ruc='$ruc',nombre='$nombre',celular='$celular',direccion='$direccion',
-fecha_ingreso='$fecha_ingreso_formato',fecha_activacion='$fecha_activa_formato',estado_pago='$estado_pago'
+fecha_ingreso='$fecha_ingreso_formato',fecha_activacion='$fecha_activa_formato',estado_pago='$estado_pago',
+fecha_tiempo_pendiente='$fecha_pendiente'
 WHERE id='$id'";
 $queryActualizar=mysqli_query($mysqli,$sqlActualizar);
+
 
 
 

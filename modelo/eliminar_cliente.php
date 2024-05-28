@@ -16,14 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Consulta para eliminar el cliente
 
-    $sqlEliminar = "DELETE FROM pagos WHERE idcliente=$cliente_id;
-                    DELETE FROM cliente WHERE id = $cliente_id";
+    //$sqlEliminar = "DELETE FROM pagos WHERE idcliente=$cliente_id;
+                    //DELETE FROM cliente WHERE id = $cliente_id";
+
+    $actualizar_cliente="UPDATE cliente set estado_cliente='Inactivo' WHERE id=$cliente_id";                
 
     // Ejecutar la consulta
-    if (mysqli_multi_query($mysqli, $sqlEliminar)) {
+    if (mysqli_multi_query($mysqli, $actualizar_cliente)) {
         header("Location:../vista/lista_clientes.php");
     } else {
-        echo "Error al eliminar el cliente: " . mysqli_error($mysqli);
+        echo "Error al realizar la accion del cliente: " . mysqli_error($mysqli);
     }
 }
 ?>

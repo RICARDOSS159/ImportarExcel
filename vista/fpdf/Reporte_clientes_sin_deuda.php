@@ -95,8 +95,8 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163); //colorBorde
 
-$consulta_reporte_clientes = $mysqli->query("SELECT id, ruc, nombre,celular,direccion,fecha_activacion
-FROM cliente WHERE estado_pago='Pagos al dia'");
+$consulta_reporte_clientes = $mysqli->query("SELECT id, ruc, nombre,celular,direccion,fecha_activacion,fecha_tiempo_pendiente
+FROM cliente WHERE estado_pago='Pagos al dia' and estado_cliente='Activo'");
 
 while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {      
    // Suponiendo que $datos_reporte->fecha_activacion contiene la fecha en formato YYYY-MM-DD

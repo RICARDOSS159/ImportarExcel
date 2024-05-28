@@ -63,8 +63,8 @@ class PDF extends FPDF
       $this->Cell(28, 10, utf8_decode('RUC'), 1, 0, 'C', 1);
       $this->Cell(35, 10, utf8_decode('EMPRESA'), 1, 0, 'C', 1);
       $this->Cell(25, 10, utf8_decode('CELULAR'), 1, 0, 'C', 1);
-      $this->Cell(50, 10, utf8_decode('DIRECCION'), 1, 0, 'C', 1);
-      $this->Cell(40, 10, utf8_decode('FECHA DE INGRESO'), 1, 1, 'C', 1);
+      $this->Cell(40, 10, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
+      $this->Cell(50, 10, utf8_decode('MESES QUE DEBE'), 1, 1, 'C', 1);
    }
 
    // Pie de página
@@ -95,8 +95,8 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163); //colorBorde
 
-$consulta_reporte_clientes = $mysqli->query("SELECT id, ruc, nombre,celular,direccion,fecha_activacion
-FROM cliente WHERE estado_pago='Pago pendiente'");
+$consulta_reporte_clientes = $mysqli->query("SELECT id, ruc, nombre,celular,direccion,fecha_activacion,fecha_tiempo_pendiente
+FROM cliente WHERE estado_pago='Pago pendiente' and estado_cliente='Activo'");
 
 while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {      
    // Suponiendo que $datos_reporte->fecha_activacion contiene la fecha en formato YYYY-MM-DD
@@ -110,8 +110,8 @@ $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
 $pdf->Cell(28, 10, utf8_decode($datos_reporte->ruc), 1, 0, 'C', 0);
 $pdf->Cell(35, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
 $pdf->Cell(25, 10, utf8_decode($datos_reporte->celular), 1, 0, 'C', 0);
-$pdf->Cell(50, 10, utf8_decode($datos_reporte->direccion), 1, 0, 'C', 0);
-$pdf->Cell(40, 10, utf8_decode($fecha_formateada), 1, 1, 'C', 0);
+$pdf->Cell(40, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
+$pdf->Cell(50, 10, utf8_decode($datos_reporte->fecha_tiempo_pendiente), 1, 1, 'C', 0);
 }
 
 $pdf->Output('Reporte_clientes_deudores.pdf', 'I');//nombreDescarga, Visor(I->visualizar - D->descargar)

@@ -48,11 +48,15 @@ class PDF extends FPDF
       $this->Cell(85, 10, utf8_decode("Sucursal : "), 0, 0, '', 0);
       $this->Ln(10);*/
     
-      $nombre = $_POST['nombre'];
+      $ruc = $_POST['ruc'];
       $mes=isset($_POST['mes']) ? intval($_POST['mes']) : null;
       $anio=$_POST['anio'];
       $desde=$_POST['from_date'];
       $hasta=$_POST['to_date'];
+
+      // Formatear la fecha al formato "DD/MM/YYYY"
+      $fecha_form_desde = date('d/m/Y', strtotime($desde));
+      $fecha_form_hasta = date('d/m/Y', strtotime($hasta));  
 
       if ($mes !== null && $mes >= 1 && $mes<= 12) {
          // Convertir el número del mes en su nombre correspondiente en español
@@ -62,10 +66,10 @@ class PDF extends FPDF
      }
      $titulo="Reporte de pagos";
      if (!empty($desde) && !empty($hasta)) {
-      $titulo .= " desde $desde hasta $hasta";
+      $titulo .= " desde $fecha_form_desde hasta $fecha_form_hasta";
      }
-     if(!empty($nombre)){
-      $titulo .= " de $nombre";
+     if(!empty($ruc)){
+      $titulo .= " de $ruc";
      }
      if (!empty($mes_nombre) && !empty($anio)) {
       $titulo .= "de $mes_nombre $anio";
@@ -78,7 +82,7 @@ class PDF extends FPDF
       $this->SetTextColor(228, 100, 0);
       $this->Cell(8); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
-      $this->Cell(90, 10, utf8_decode($titulo), 0, 1, 'C', 0);
+      $this->Cell(70, 10, utf8_decode($titulo), 0, 1, 'C', 0);
       $this->Ln(7);
 
       /* CAMPOS DE LA TABLA */
@@ -87,11 +91,11 @@ class PDF extends FPDF
       $this->SetTextColor(255, 255, 255); //colorTexto
       $this->SetDrawColor(163, 163, 163); //colorBorde
       $this->SetFont('Arial', 'B', 11);
-      if ($nombre !== null && !empty($nombre)) {
+      if ($ruc !== null && !empty($ruc)) {
         
          $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
-         $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(30, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
@@ -135,28 +139,28 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163); //colorBorde
 
-$nombre = isset($_POST['nombre']) ? $mysqli->real_escape_string($_POST['nombre']) : '';
+$ruc = isset($_POST['ruc']) ? $mysqli->real_escape_string($_POST['ruc']) : '';
 $mes = isset($_POST['mes']) ? $mysqli->real_escape_string($_POST['mes']) : '';
 $anio = isset($_POST['anio']) ? $mysqli->real_escape_string($_POST['anio']) : '';
 $desde = isset($_POST['from_date']) ? $mysqli->real_escape_string($_POST['from_date']) : '';
 $hasta=isset($_POST['to_date']) ? $mysqli->real_escape_string($_POST['to_date']) : '';
 
-if (!empty($nombre) && !empty($desde) && !empty($hasta) && empty($anio) && empty($mes)) {
+if (!empty($ruc) && !empty($desde) && !empty($hasta) && empty($anio) && empty($mes)) {
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
    P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
-   WHERE C.nombre = '$nombre' and P.fecha BETWEEN '$desde' AND '$hasta' order by P.fecha ");
+   WHERE C.ruc = '$ruc' and P.fecha BETWEEN '$desde' AND '$hasta' order by P.fecha ");
 
 
-}elseif(!empty($nombre) && !empty($anio)&& empty($desde) && empty($hasta)&& empty($mes)){
+}elseif(!empty($ruc) && !empty($anio)&& empty($desde) && empty($hasta)&& empty($mes)){
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
    P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
    INNER JOIN pagos AS P ON C.id = P.idcliente 
-   WHERE C.nombre = '$nombre' and YEAR(P.fecha)=$anio order by P.fecha ");
+   WHERE C.ruc = '$ruc' and YEAR(P.fecha)=$anio order by P.fecha ");
 
-}elseif(!empty($desde) && !empty($hasta)&& empty($nombre) && empty($mes)&& empty($anio)){
+}elseif(!empty($desde) && !empty($hasta)&& empty($ruc) && empty($mes)&& empty($anio)){
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
    P.metodo_pago,P.tipo_pago,P.mes_correspon     
    FROM cliente AS C 
@@ -168,18 +172,18 @@ if (!empty($nombre) && !empty($desde) && !empty($hasta) && empty($anio) && empty
    $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto, P.tipo_pago, P.metodo_pago,P.mes_correspon
     FROM cliente as C INNER JOIN pagos as P on C.id = P.idcliente
     WHERE YEAR(P.fecha)='$anio' order by C.nombre");
-}elseif(!empty($anio) && !empty($mes) && empty($nombre)){
+}elseif(!empty($anio) && !empty($mes) && empty($ruc)){
   $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
  P.metodo_pago,P.tipo_pago,P.mes_correspon     
  FROM cliente AS C 
  INNER JOIN pagos AS P ON C.id = P.idcliente 
  WHERE MONTH(P.fecha) = $mes AND YEAR(P.fecha) =$anio");
  
-}elseif(!empty($nombre) && empty($mes) && empty($anio)){
+}elseif(!empty($ruc) && empty($mes) && empty($anio)){
    $consulta_reporte_clientes = $mysqli->query("SELECT C.id, C.ruc, C.nombre, P.idpago, P.fecha, P.monto,
 P.tipo_pago,P.metodo_pago,P.mes_correspon FROM cliente as C 
 INNER JOIN pagos as P on C.id = P.idcliente
-WHERE C.nombre='$nombre' order by P.fecha");
+WHERE C.ruc='$ruc' and estado_cliente='Activo' order by P.fecha");
 }else{
    $consulta_reporte_clientes=$mysqli->query("SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
    P.metodo_pago,P.tipo_pago,P.mes_correspon     
@@ -195,10 +199,10 @@ while ($datos_reporte = $consulta_reporte_clientes->fetch_object()) {
    $fecha_formateada = date('d/m/Y', strtotime($fecha));   
 $i = $i + 1;
 /* TABLA */
-if ($nombre !== null && !empty($nombre)) {
+if ($ruc !== null && !empty($ruc)) {
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
-$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
 $pdf->Cell(35, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
+$pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
 $pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
 $pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
 $pdf->Cell(30, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);

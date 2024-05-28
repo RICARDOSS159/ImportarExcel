@@ -12,7 +12,9 @@ $mysqli= mysqli_connect($servidor,$user,$contrasenia,$database) or die(mysqli_co
 }else{
     echo('Conexion exitosa');
 }*/
-$sql = "SELECT id,ruc,nombre,celular FROM cliente";
+$sql = "SELECT id,ruc,nombre,celular FROM cliente WHERE estado_cliente='Activo'";
 $result = $mysqli->query($sql);
+
+
 
 ?>

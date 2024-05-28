@@ -205,7 +205,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
               <input type="hidden" name="id" value="<?= $data['id']; ?>">
               <div class="form-group">
                     <label for="exampleInputEmail1">Ingrese el RUC</label>
-                    <input type="text" class="form-control" id="Ruc" name="ruc" placeholder="RUC" value="<?= $data['ruc']; ?>">
+                    <input type="text" maxlength="11" class="form-control" id="Ruc" name="ruc" placeholder="RUC" value="<?= $data['ruc']; ?>">
                   </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Ingrese la empresa</label>
@@ -213,7 +213,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
               </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Ingrese el celular</label>
-                    <input type="text" class="form-control" id="Celular" name="celular" placeholder="Celular" value="<?= $data['celular']; ?>">
+                    <input type="text" maxlength="9" class="form-control" id="Celular" name="celular" placeholder="Celular" value="<?= $data['celular']; ?>">
               </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Ingrese la direccion</label>
@@ -258,16 +258,21 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                 <select class="form-control" id="estado_pago" name="estado_pago">
                 <option value="Pagos al dia" <?= ($data['estado_pago'] == 'Pagos al dia') ? 'selected' : ''; ?>>Pagos al dia</option>
                 <option value="Pago pendiente" <?= ($data['estado_pago'] == 'Pago pendiente') ? 'selected' : ''; ?>>Pago pendiente</option>
-        
-              
+      
         </select>
-
-                <br>
+        <br>
+              </div>
+              <!-- /.card-body -->
+              <?php if ($data['estado_pago'] == 'Pago pendiente'): ?>
+              <div class="form-group">
+                    <label for="exampleInputEmail1">Ingrese los meses que debe</label>
+                    <input type="text" class="form-control" id="fecha_tiempo_pendiente" name="fecha_tiempo_pendiente" placeholder="Ingrese los meses que debe" value="<?= $data['fecha_tiempo_pendiente']; ?>">
+              </div>
+              <?php endif; ?>
+              <br>
                 <div class="container">
                 <input type="submit" class="btn btn-success" value="Actualizar"></input>
                 </div>
-              </div>
-              <!-- /.card-body -->
             </div>
             <!-- /.card -->
         </div>

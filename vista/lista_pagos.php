@@ -182,45 +182,41 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
           <div class="col-sm-6">
             <h1 class="m-0">Lista de pagos</h1>
           </div><!-- /.col -->
-         
-        </div><!-- /.row -->
-    </div>
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-   
-    </section>
-
-    <!-- Main content -->
+            <!-- Main content -->
     <div class="text-center d-flex justify-content-center">
     
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-<?header("Content-Type: text/html;charset=utf-8");?>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" name="Nuevo" href="registrar_pago.php">REGISTRAR PAGO</button>&nbsp;&nbsp;
-<button class="btn btn-success" name="Todo" href="lista_pagos.php">MOSTRAR TODO</button>&nbsp
-
-</form>
-<br>
-<form action="fpdf/Reporte_clientes.php" method="POST" target="_blank" style="margin-left:10px">
-                             <!-- Campos ocultos para enviar los datos del formulario de búsqueda -->
-    <input type="hidden" name="nombre" value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : ''; ?>">
-    <input type="hidden" name="mes" value="<?php echo isset($_POST['mes']) ? $_POST['mes'] : ''; ?>">
-    <input type="hidden" name="anio" value="<?php echo isset($_POST['anio']) ? $_POST['anio'] : ''; ?>">
-    <input type="hidden" name="from_date" value="<?php echo isset($_POST['from_date']) ? $_POST['from_date'] : ''; ?>">
-    <input type="hidden" name="to_date" value="<?php echo isset($_POST['to_date']) ? $_POST['to_date'] : ''; ?>">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    <?header("Content-Type: text/html;charset=utf-8");?>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" name="Nuevo" href="registrar_pago.php">REGISTRAR PAGO</button>&nbsp;&nbsp;
+    <button class="btn btn-success" name="Todo" href="lista_pagos.php">MOSTRAR TODO</button>&nbsp
     
-    <!-- Botón para generar el reporte PDF -->
-    <button name="accion" value="Reporte" class="btn btn-success">Generar Reporte PDF</button>
-</form>
-</div>
-<br><br>
+    </form>
+    <br>
+    <form action="fpdf/Reporte_clientes.php" method="POST" target="_blank" style="margin-left:10px">
+                                 <!-- Campos ocultos para enviar los datos del formulario de búsqueda -->
+        <input type="hidden" name="ruc" value="<?php echo isset($_POST['ruc']) ? $_POST['ruc'] : ''; ?>">
+        <input type="hidden" name="mes" value="<?php echo isset($_POST['mes']) ? $_POST['mes'] : ''; ?>">
+        <input type="hidden" name="anio" value="<?php echo isset($_POST['anio']) ? $_POST['anio'] : ''; ?>">
+        <input type="hidden" name="from_date" value="<?php echo isset($_POST['from_date']) ? $_POST['from_date'] : ''; ?>">
+        <input type="hidden" name="to_date" value="<?php echo isset($_POST['to_date']) ? $_POST['to_date'] : ''; ?>">
+        
+        <!-- Botón para generar el reporte PDF -->
+        <button name="accion" value="Reporte" class="btn btn-success">Generar Reporte PDF</button>
+    </form>
+    </div>
+        </div><!-- /.row -->
+    </div>
+
 <div class="">
 <section class="content">
 <form action="" method="POST">
             <div class="row">
             <div class="col-md-4">
             <div class="form-group" style="margin-left:10px">
-                <label><b>Filtrar por Nombre</b></label>
-                <input id="inputNombre" type="text" name="nombre" class="form-control" placeholder="Ingrese el nombre" value="<?php if(isset($_POST['nombre'])){ echo $_POST['nombre']; } ?>"> 
+                <!--<label><b>Filtrar por Nombre</b></label>
+                <input id="inputNombre" type="text" name="nombre" class="form-control" placeholder="Ingrese el nombre" value="">-->
+                <label><b>Filtrar por RUC</b></label>
+                <input id="inputRuc" type="text" name="ruc" class="form-control" placeholder="Ingrese el ruc" value="<?php if(isset($_POST['ruc'])){ echo $_POST['ruc']; } ?>"> 
             </div>
             </div>
             <div class="col-md-4">
@@ -282,11 +278,11 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         
         if ($accion === "buscar") {
             // Procesar la búsqueda por nombre
-            $nombre = $_POST['nombre'];
+            $nombre = $_POST['ruc'];
             // Realizar la consulta o la acción correspondiente utilizando el nombre
         } elseif ($accion === "informe") {
             // Generar el informe utilizando el nombre
-            $nombre = $_POST['nombre'];
+            $nombre = $_POST['ruc'];
             $anio=$_POST['anio'];
             // Generar el informe utilizando el nombre proporcionado
         } else {
@@ -298,13 +294,13 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
  <?php 
  include('../modelo/filtrar_mes.php');
 // Verifica si se está filtrando por me
-  $filtro_por_nombre_rango=!empty($_POST['nombre'])&& !empty($_POST['from_date']) && !empty($_POST['to_date']);
+  $filtro_por_ruc_rango=!empty($_POST['ruc'])&& !empty($_POST['from_date']) && !empty($_POST['to_date']);
   $filtro_por_mes = !empty($_POST['mes']);
   $filtro_por_anio = !empty($_POST['anio']);
-  $filtro_por_nombre=!empty($_POST['nombre']);
+  $filtro_por_ruc=!empty($_POST['ruc']);
   $filtro_por_rango=!empty($_POST['from_date']) && !empty($_POST['to_date']);
-  $filtro_por_nombre_anio=!empty($_POST['nombre']) && !empty($_POST['anio']);
-  $sin_filtro=!$filtro_por_mes && !$filtro_por_rango && !$filtro_por_nombre &&!$filtro_por_anio &&!$filtro_por_nombre_anio;
+  $filtro_por_ruc_anio=!empty($_POST['ruc']) && !empty($_POST['anio']);
+  $sin_filtro=!$filtro_por_mes && !$filtro_por_rango && !$filtro_por_ruc &&!$filtro_por_anio &&!$filtro_por_ruc_anio;
   
   
   // Output the filtered data (in whatever format you prefer, JSON is commonly used)
@@ -320,7 +316,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>';
-                  if($filtro_por_mes||$filtro_por_anio && !$filtro_por_nombre_anio){
+                  if($filtro_por_mes||$filtro_por_anio && !$filtro_por_ruc_anio){
                     echo '<th>#</th>
                    <th>RUC</th>
                    <th>Nombre</th>
@@ -329,7 +325,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                     echo '<th>Tipo de Pago</th>';
                     echo '<th>Mes Pagado</th>';
                    }
-                   if($filtro_por_nombre_anio){
+                   if($filtro_por_ruc_anio){
                     echo '<th>#</th>
                     <th>Fecha</th>
                     <th>Monto</th>
@@ -341,7 +337,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                    /*if(ISSET($filtro_por_mes) && ISSET($filtro_por_nombre)){
                     echo '<th>Lista de pagos</th>';
                    }*/
-                   if($filtro_por_rango&&!$filtro_por_nombre){
+                   if($filtro_por_rango&&!$filtro_por_ruc){
                     echo'<th>#</th>
                    <th>RUC</th>
                    <th>Nombre</th>
@@ -350,15 +346,16 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                     <th>Tipo de Pago</th>
                    <th>Mes Pagado</th>';
                    }
-                   if($filtro_por_nombre_rango){
+                   if($filtro_por_ruc_rango){
                     echo'<th>#</th>
                      <th>Fecha</th>
+                     <th>Monto</th>
                     <th>Metodo Pago</th>
                    <th>Tipo Pago</th>
                    <th>Mes Pagado</th>';
                    }
                    // Verificar si no se está filtrando por mes para incluir la columna "Mostrar pago"
-                   if ($filtro_por_nombre &&!$filtro_por_rango && !$filtro_por_nombre_anio||$sin_filtro) {
+                   if ($filtro_por_ruc &&!$filtro_por_rango && !$filtro_por_ruc_anio||$sin_filtro) {
                     echo '<th>#</th>
                     <th>RUC</th>
                     <th>Nombre</th>
@@ -378,38 +375,39 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                       <th scope="row"><?php echo $i++; ?></th>
                       
                       <!--Este es solo para que filtre por mes o anio y no sea por filtro de nombre y año-->
-                      <?php if ($filtro_por_mes||$filtro_por_anio &&!$filtro_por_nombre_anio) {?>
+                      <?php if ($filtro_por_mes||$filtro_por_anio &&!$filtro_por_ruc_anio) {?>
                         <td><?php echo $data['ruc']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
-                        <td><?php echo $data['fecha']; ?></td>
+                        <td><?php echo $data['fecha_form_pago']; ?></td>
                       <?php echo '<td>'.$data['metodo_pago'].'</td>';
                       echo '<td>'.$data['tipo_pago'].'</td>';
                       echo '<td>'.$data['mes_correspon'].'</td>';
                        }?>
-                       <?php if ($filtro_por_nombre_anio) {?>
-                        <?php echo '<td>'.$data['fecha'].'</td>';
+                       <?php if ($filtro_por_ruc_anio) {?>
+                        <?php echo '<td>'.$data['fecha_form_pago'].'</td>';
                         echo '<td>'.$data['monto'].'</td>';  
                         echo '<td>'.$data['metodo_pago'].'</td>';
                       echo '<td>'.$data['tipo_pago'].'</td>';
                       echo '<td>'.$data['mes_correspon'].'</td>';
                        }?>
         
-                      <?php if ($filtro_por_rango && !$filtro_por_nombre) {?>
+                      <?php if ($filtro_por_rango && !$filtro_por_ruc) {?>
                         <td><?php echo $data['ruc']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
-                      <?php echo '<td>'.$data['fecha'].'</td>';
+                      <?php echo '<td>'.$data['fecha_form_pago'].'</td>';
                       echo '<td>'.$data['metodo_pago'].'</td>';
                       echo '<td>'.$data['tipo_pago'].'</td>';
                       echo '<td>'.$data['mes_correspon'].'</td>';
                        }?>
-                       <?php if ($filtro_por_nombre_rango) {?>
+                       <?php if ($filtro_por_ruc_rango) {?>
                         
-                      <?php echo '<td>'.$data['fecha'].'</td>';
+                      <?php echo '<td>'.$data['fecha_form_pago'].'</td>';
+                      echo '<td>'.$data['monto'].'</td>';
                       echo '<td>'.$data['metodo_pago'].'</td>';
                       echo '<td>'.$data['tipo_pago'].'</td>';
                       echo '<td>'.$data['mes_correspon'].'</td>';
                        }?>
-                      <?php if ($filtro_por_nombre &&!$filtro_por_rango &&!$filtro_por_nombre_anio|| $sin_filtro ) {?>
+                      <?php if ($filtro_por_ruc &&!$filtro_por_rango &&!$filtro_por_ruc_anio|| $sin_filtro ) {?>
                          <td><?php echo $data['ruc']; ?></td>
                          <td><?php echo $data['nombre']; ?></td>
                          <td><?php echo $data['celular']; ?></td>
@@ -611,15 +609,17 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Selecciona el campo de entrada del nombre
-    var inputNombre = document.getElementById("inputNombre");
+    var inputRuc = document.getElementById("inputRuc");
     // Selecciona el select de mes
     var selectMes = document.getElementById("selectMes");
+    var selectAnio = document.getElementById("selectAnio");
     // Agrega un listener para el evento de entrada en el campo de entrada del nombre
-    inputNombre.addEventListener("input", limpiarFiltroMes);
+    inputRuc.addEventListener("input", limpiarFiltroMes);
     // Función para limpiar el filtro por mes cuando se escribe un nombre
     function limpiarFiltroMes() {
         // Restablece el valor del select de mes a la opción predeterminada
         selectMes.value = "";
+        selectAnio.value= "";
     }
 });
 </script>
@@ -630,7 +630,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Selecciona el campo de entrada del nombre
     var selectMes = document.getElementById("selectMes");
     // Selecciona el select de nombre y rango de fechas
-    var inputNombre = document.getElementById("inputNombre");
+    var inputRuc = document.getElementById("inputRuc");
     var desde = document.getElementById("desde");
     var hasta = document.getElementById("hasta");
     // Agrega un listener para el evento de entrada en el campo de entrada del nombre
@@ -638,7 +638,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Función para limpiar el filtro por mes cuando se escribe un nombre
     function limpiarFiltroNombre() {
         // Restablece el valor del select de mes a la opción predeterminada
-        inputNombre.value = "";
+        inputRuc.value = "";
         desde.value="";
         hasta.value="";
     }
