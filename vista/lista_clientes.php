@@ -3,6 +3,13 @@
 session_start();
 
 include('../modelo/conexion.php');
+// Verifica si el usuario está autenticado o cumple con ciertos criterios
+if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['username'] || !$_SESSION['contrasenia']){
+  // Si no está autenticado o no cumple con los criterios, redirige a la página de inicio de sesión o a otra página de acceso no autorizado
+  header("Location: login.php");
+  exit();
+}
+
   $user_id = $_SESSION['user_id'];
   $sql = "SELECT usuario FROM usuario WHERE id_usuario = $user_id";
   $result = $mysqli->query($sql);
@@ -14,12 +21,6 @@ include('../modelo/conexion.php');
       $nombreUsuario = "Usuario Desconocido";
   }
 
-// Verifica si el usuario está autenticado o cumple con ciertos criterios
-if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['username'] || !$_SESSION['contrasenia']){
-    // Si no está autenticado o no cumple con los criterios, redirige a la página de inicio de sesión o a otra página de acceso no autorizado
-    header("Location: login.php");
-    exit();
-}
 
 ?>
 <!DOCTYPE html>

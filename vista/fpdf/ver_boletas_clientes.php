@@ -17,7 +17,7 @@
 	$payment_id = isset($_POST['idpago']) ? $_POST['idpago'] : 0;
 
 	//Query para buscar por id
-	$BuscarxId="SELECT c.id, p.idpago,c.ruc,c.nombre,c.celular,c.direccion,p.tipo_pago,p.mes_correspon,p.monto
+	$BuscarxId="SELECT c.id, p.idpago,p.num_boleta,c.ruc,c.nombre,c.celular,c.direccion,p.tipo_pago,p.mes_correspon,p.monto
 	FROM cliente as c INNER JOIN pagos as p on c.id=p.idcliente WHERE p.idpago=?";
 
 	$stmt = $mysqli->prepare($BuscarxId);
@@ -33,21 +33,42 @@
 	$row = $resultadoRecibo->fetch_assoc();
 	$numero_recibo_actual = $row['nro_recibo'];
 
-	// Incrementar el número de recibo
-	$numero_recibo_nuevo = $numero_recibo_actual + 1;
+	
 
-	// Actualizar el número de recibo en la base de datos
-	$queryActualizar = "UPDATE recibo SET nro_recibo = $numero_recibo_nuevo WHERE id = 1";
-	$mysqli->query($queryActualizar);
-	$numero_formateado = sprintf('%06d', $numero_recibo_nuevo);
+    // Obtener el número de recibo actual desde la base de datos
+	$queryNumBoleta = "SELECT num_boleta FROM pagos WHERE idpago = ?";
+	$campoBoleta = $mysqli->prepare($queryNumBoleta);
+	$campoBoleta ->bind_param("i", $payment_id);
+    $campoBoleta->execute();
+    $numero_boleta=$campoBoleta->get_result();
+    $boleta_recibida = $numero_boleta->fetch_assoc();
+    $numero_recibo_estatico = $boleta_recibida['num_boleta'];
 
-	// Actualizar boleta_generada en la base de datos
-    $queryActualizar = "UPDATE pagos SET boleta_generada = 1 WHERE idpago = ?";
-    $stmtActualizar = $mysqli->prepare($queryActualizar);
-    $stmtActualizar->bind_param("i", $payment_id);
-    $stmtActualizar->execute();
-    $stmtActualizar->close();
+            // Verificar si num_boleta ya tiene un valor asignado
+            if (empty($numero_recibo_estatico)) {
+                // num_boleta está vacío, generar un nuevo número de boleta
+                $queryMaxBoleta = "SELECT MAX(num_boleta) AS max_boleta FROM pagos";
+                $resultMaxBoleta = $mysqli->query($queryMaxBoleta);
+                $rowMaxBoleta = $resultMaxBoleta->fetch_assoc();
+                $max_boleta = $rowMaxBoleta['max_boleta'];
 
+                // Incrementar el número de boleta
+                //$numero_recibo_nuevo = $max_boleta + 1;
+                $numero_formateado = sprintf('%06d', $numero_recibo_actual);
+
+                // Actualizar el número de boleta en la base de datos
+                $queryActualizar = "UPDATE pagos SET num_boleta = ? WHERE idpago = ?";
+                $stmtActualizar = $mysqli->prepare($queryActualizar);
+                $stmtActualizar->bind_param("ii", $numero_recibo_actual, $payment_id);
+                $stmtActualizar->execute();
+                $stmtActualizar->close();
+
+            } else {
+                // num_boleta ya tiene un valor asignado
+                $numero_formateado = sprintf('%06d', $numero_recibo_estatico);
+            }
+
+  
 
 	$pdf = new PDF_Code128('P','mm','Letter');
 	$pdf->SetMargins(17,17,17);
@@ -114,7 +135,25 @@ $pdf->Cell($width, $height_number, iconv("UTF-8", "ISO-8859-1", strtoupper($nume
 
 	$pdf->Ln(30);
     date_default_timezone_set('America/Lima');
-    $hoy = date('d/m/Y');
+    $hoy = date('Y-m-d');
+     // Actualizar la fecha de emisión en la base de datos
+     $queryActualizarFecha = "UPDATE pagos SET fecha_emision = ? WHERE idpago = ?";
+     $stmtActualizarFecha = $mysqli->prepare($queryActualizarFecha);
+     $stmtActualizarFecha->bind_param("si", $hoy, $payment_id);
+     $stmtActualizarFecha->execute();
+     $stmtActualizarFecha->close();
+
+     // Obtener la fecha de emisión desde la base de datos
+        $queryFechaEmision = "SELECT DATE_FORMAT(fecha_emision, '%d/%m/%Y') AS fecha_form_pago FROM pagos WHERE idpago = ?";
+        $stmtFechaEmision = $mysqli->prepare($queryFechaEmision);
+        $stmtFechaEmision->bind_param("i", $payment_id);
+        $stmtFechaEmision->execute();
+        $stmtFechaEmision->bind_result($hoy);
+        $stmtFechaEmision->fetch();
+        $stmtFechaEmision->close();
+
+
+
 	$pdf->SetFont('Arial','',10);
 	$pdf->Cell(30,0,iconv("UTF-8", "ISO-8859-1","Fecha de emisión:"),0,0,);
 	$pdf->SetTextColor(97,97,97);
@@ -282,4 +321,4 @@ $mysqli->close();
 	$pdf->MultiCell(0,5,iconv("UTF-8", "ISO-8859-1","COD000001V0001"),0,'C',false);*/
 
 	# Nombre del archivo PDF #
-	$pdf->Output("I","Boleta_cliente_".$payment['nombre'].".pdf",true);
+	$pdf->Output("I","Boleta_Pago".$payment['nombre'].".pdf",true);

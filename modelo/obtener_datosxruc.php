@@ -14,7 +14,7 @@ if(isset($_POST['ruc'])) {
 
     // Consulta SQL para obtener los datos del cliente y sus pagos
     $consulta = "SELECT C.ruc, C.nombre, C.celular,P.idpago,DATE_FORMAT(P.fecha, '%d/%m/%Y') AS fecha_form_pago, P.monto,P.ruta_capturas,
-                 P.metodo_pago,P.tipo_pago,P.mes_correspon 
+                 P.metodo_pago,P.tipo_pago,P.mes_correspon,P.boleta_generada 
                  FROM cliente AS C
                  INNER JOIN pagos AS P ON C.id = P.idcliente
                  WHERE C.ruc = '$rucCliente' ORDER BY fecha ASC";
@@ -25,7 +25,8 @@ if(isset($_POST['ruc'])) {
     if(mysqli_num_rows($resultado) > 0) {
         // Construir la tabla HTML con los datos del cliente y sus pagos
         $tabla = '<table class="table">';
-        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th><th>Mes Pagado</th><th>Comprobante</th></tr></thead>';
+        $tabla .= '<thead><tr><th>Fecha</th><th>Monto</th><th>Foto</th><th>Metodo de pago</th><th>Tipo de pago</th><th>Mes Pagado</th>
+        <th>Comprobante</th><th>Ver comprobante</th><th>Actualizar</th></tr></thead>';
         $tabla .= '<tbody>';
 
         while($fila = mysqli_fetch_assoc($resultado)) {
@@ -55,7 +56,22 @@ if(isset($_POST['ruc'])) {
             $tabla .= '<td>'.$fila['metodo_pago'].'</td>';
             $tabla .= '<td>'.$fila['tipo_pago'].'</td>';
             $tabla .= '<td>'.$fila['mes_correspon'].'</td>';
-            $tabla .= '<td><a href="fpdf/Reporte_clientes_sin_deuda.php" target="_blank" class="btn btn-primary">Generar reporte</a></td>';
+            $tabla .= '<td><form action="fpdf/boletas_clientes.php" method="post" target="_blank">
+            <input type="hidden" name="idpago" value="'.$fila['idpago'].'">
+            <button type="submit" class="btn btn-primary">Generar recibo</button>
+            </form></td>';
+            if ($fila['boleta_generada']==1) {
+                $tabla .= '<td><form action="fpdf/ver_boletas_clientes.php" method="post" target="_blank">
+                     <input type="hidden" name="idpago" value="'.$fila['idpago'].'">
+                     <button type="submit" class="btn btn-primary">Ver boleta</button>
+                     </form></td>';
+            } else {
+                $tabla .= '<td></td>'; // Celda vacía si no se ha generado la boleta
+            }
+            $tabla .= '<td><form action="actualizar_pagos.php" method="post">
+            <input type="hidden" name="idpago" value="'.$fila['idpago'].'">
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            </form></td>';
             $tabla .= '</tr>';
         }
 

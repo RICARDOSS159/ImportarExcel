@@ -18,8 +18,7 @@ $mysqli= mysqli_connect($servidor,$user,$contrasenia,$database) or die(mysqli_co
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar si se ha seleccionado una imagen
-    if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] == 0) {
+   
         $nombre = $_FILES["imagen"]["name"];
         $tipo = $_FILES["imagen"]["type"];
         $tamanio = $_FILES["imagen"]["size"];
@@ -55,11 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Cerrar la consulta
-        $consulta->close();
-    } else {
-        echo "<script>alert('Selecciona una imagen válida o rellena todos los campos.');window.location.href = '../vista/nuevo_registro_pago.php';</script>";
-        
-    }
 }
 
 // Cerrar la conexión a la base de datos

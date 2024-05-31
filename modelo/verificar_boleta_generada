@@ -1,0 +1,19 @@
+<?php
+include 'conexion.php';
+
+if (isset($_POST['idpago'])) {
+    $pago_id = $_POST['idpago'];
+
+    // Genera tu boleta aquí...
+    
+    // Actualizar boleta_generada en la base de datos
+    $queryActualizar = "UPDATE pagos SET boleta_generada = 1 WHERE idpago = ?";
+    $stmtActualizar = $mysqli->prepare($queryActualizar);
+    $stmtActualizar->bind_param("i", $pago_id);
+    $stmtActualizar->execute();
+    $stmtActualizar->close();
+
+} 
+
+$mysqli->close();
+?>
