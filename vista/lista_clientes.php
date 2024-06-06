@@ -46,6 +46,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <!-- Theme style -->
   <link rel="stylesheet" href="../vista/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="../vista/dist/css/adminlte.css">
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -87,6 +88,73 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   cursor: pointer;
 }
 </style>
+
+<style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .form-group {
+            flex: 1 1 calc(50% - 20px);
+            box-sizing: border-box;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 90%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .full-width {
+            flex: 1 1 100%;
+        }
+        .input-group {
+            display: flex;
+        }
+        .input-group .input-group-append {
+            display: flex;
+            align-items: center;
+        }
+        .input-group .input-group-text {
+            padding: 8px;
+        }
+        
+    </style>
 <?php
   header("Content-Type: text/html;charset=utf-8");
   include('../modelo/conexion.php');
@@ -242,11 +310,12 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                   <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_anual.php';">Actualizar estado de pagos Anual</button>
                   <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_mensual.php';" style="margin-left:10px">Actualizar estado de pagos Mensual </button>
                   <button id="abrir_modal" class="btn btn-success"  style="margin-left:10px">Agregar nuevo cliente</button>
-                  <div id="modal" class="modal">
-                    <div class="modal-content">
+                  <div id="modal" class="modal" >
+                    <div class="modal-content" >
                     <span class="close">&times;</span>
                     <h2>Registra un nuevo cliente</h2>
                     <form action="../modelo/guardar_cliente.php" method="post" enctype="multipart/form-data">
+                    <div class="form-container">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Ingrese el RUC</label>
                           <input type="text" class="form-control" maxlength="11" id="Ruc" name="Ruc" placeholder="RUC">
@@ -267,8 +336,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                     <div class="form-group">
                       <label>Fecha de Ingreso:</label>
                         <div class="input-group date"  id="reservationdate" data-target-input="nearest">
-                            <input type="text" id="fecha_ingreso" name="fecha_ingreso" class="form-control1 datetimepicker-input" data-target="#reservationdate"/>
-                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <input type="text" id="fecha_ingreso" name="fecha_ingreso" class="form-control1 datetimepicker-input" data-target="#reservationdate" style="width: 280px;"/>
+                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker" style="padding-left: 0px;">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
                         </div>
@@ -278,8 +347,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                     <label>Fecha de activación sunat:</label>
 
                     <div class="input-group date"  id="reservationdate2" data-target-input="nearest">
-                          <input type="text" id="fecha_activacion" name="fecha_activacion" class="form-control1 datetimepicker-input" data-target="#reservationdate2"/>
-                          <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+                          <input type="text" id="fecha_activacion" name="fecha_activacion" class="form-control1 datetimepicker-input" data-target="#reservationdate2" style="width: 280px;"/>
+                          <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker" style="padding-left: 0px;">
                               <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                           </div>
                       </div>
@@ -289,6 +358,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                   <div class="container">
                     <button type="submit" class="btn btn-primary">Registrar cliente</button>
                   </div>
+                        </div>
                       </form>  
                       </div>
                       </div>

@@ -24,12 +24,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tamanio = $_FILES["imagen"]["size"];
         $ruta_temporal = $_FILES["imagen"]["tmp_name"];
 
-        // Generar un nombre único para la imagen
-        $nombre_unico = uniqid() . "_" . $nombre;
+        
 
         // Mover la imagen a la carpeta de destino
-        $ruta_destino = $carpeta_destino . $nombre_unico;
+        $ruta_destino = $carpeta_destino . basename($_FILES["imagen"]["name"]);
         move_uploaded_file($ruta_temporal, $ruta_destino);
+
+        // Limitar el tamaño del archivo (por ejemplo, 5MB)
+        if ($_FILES["imagen"]["size"] > 5000000) {
+            die("Lo siento, tu archivo es demasiado grande.");
+        }
 
         // Datos adicionales
         $userId=$_POST['cliente'];

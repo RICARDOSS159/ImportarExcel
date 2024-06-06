@@ -107,7 +107,7 @@ if(isset($_POST['ruc']) && !empty($_POST['ruc']) && empty($_POST['from_date']) &
     $query = "SELECT C.id, C.ruc, C.nombre, C.celular, P.idpago, P.fecha, P.monto, P.ruta_capturas,
               P.metodo_pago 
               FROM cliente AS C 
-              INNER JOIN pagos AS P ON C.id = P.idcliente WHERE C.estado_cliente='Activo' group by c.ruc order by C.id";
+              INNER JOIN pagos AS P ON C.id = P.idcliente WHERE C.estado_cliente='Activo' group by c.ruc order by P.idpago";
 }
 
 

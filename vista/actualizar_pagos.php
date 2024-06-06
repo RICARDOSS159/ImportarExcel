@@ -20,17 +20,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     header("Location: login.php");
     exit();
 }
-
 ?>
-
-<?php 
-    
-
-  if(isset($_POST["Atras"])){
-    header("Location:clientes.php");
-    exit();
-  }
-  ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,22 +81,14 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-
-
 <?php
   header("Content-Type: text/html;charset=utf-8");
   include('../modelo/conexion.php');
   include('../modelo/actualizar_cliente.php');
-  $sqlClientes = ("SELECT * FROM cliente ORDER BY id ASC");
-  $queryData   = mysqli_query($mysqli, $sqlClientes);
-  $total_client = mysqli_num_rows($queryData);
+  $sqlClientes= ("SELECT * FROM cliente ORDER BY id ASC");
+  $queryData= mysqli_query($mysqli, $sqlClientes);
+  $total_client= mysqli_num_rows($queryData);
   ?>
-
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="dist/img/logo.jpg" alt="AdminLTELogo" height="60" width="60">
-  </div>
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -220,50 +202,56 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         </div><!-- /.row -->
     </div>
 
+    <?php
+  include('../modelo/conexion.php');
+  include('../modelo/actualizar_pagos.php');
+
+  $idPago = $_GET['idpago'];
+  $sqlPagos = ("SELECT c.id,c.ruc,c.nombre,c.celular,c.direccion,p.idpago,p.fecha,p.monto,p.ruta_capturas,p.metodo_pago,p.tipo_pago,p.mes_correspon
+   FROM cliente as c inner join pagos as p on C.id=p.idcliente where p.idpago=$idPago");
+  $queryData   = mysqli_query($mysqli, $sqlPagos);
+  $pagos = mysqli_fetch_array($queryData);
+  ?>
     
-    
-    <form action="../modelo/guardar_datos.php" method="post" enctype="multipart/form-data">
+    <form action="../modelo/actualizar_pagos.php" method="post" enctype="multipart/form-data">
         <div class="row">
           <div class="col-md-12">
 
             <div class="card card-success">
               
               <div class="card-body">
+              <input type="hidden" name="idpagoAct" value="<?= $pagos['idpago']; ?>">
               <div class="form-group">
                     <label for="exampleInputEmail1">RUC</label>
-                    <select name="cliente" class="form-control" id="cliente">
-        <option value="default" class="form-control" selected>Selecciona un ruc</option>
-        <?php
-            // Iterar sobre los resultados y llenar el elemento select
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='{$row["id"]}'>{$row["ruc"]}</option>";
-                print_r($row);
-            }
-            ?>
-        </select>
+                    <input type="text" id="ruc"  class="form-control" name="rucAct" value="<?= $pagos['ruc']; ?>" readonly>
               </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Empresa</label>
-                    <input type="text" id="nombre"  class="form-control" name="nombre" readonly>
+                    <input type="text" id="nombre"  class="form-control" name="nombreAct" value="<?= $pagos['nombre']; ?>" readonly>
               </div>
               
               <div class="form-group">
                     <label for="exampleInputEmail1">Direccion</label>
-                    <input type="text" id="direccion"  class="form-control" name="direccion" readonly>
+                    <input type="text" id="direccion"  class="form-control" name="direccionAct" value="<?= $pagos['direccion']; ?>" readonly>
               </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Celular</label>
-                    <input type="text" id="celular"  class="form-control" name="celular" readonly>
+                    <input type="text" id="celular"  class="form-control" name="celularAct" value="<?= $pagos['celular']; ?>" readonly>
               </div>
               <div class="form-group">
                     <label for="exampleInputEmail1">Monto</label>
-                    <input type="number" class="form-control" id="monto" name="monto" placeholder="Monto">
+                    <input type="number" class="form-control" id="monto" name="montoAct" value="<?= $pagos['monto']; ?>" placeholder="Monto">
               </div>
                 <!-- Date dd/mm/yyyy -->
                 <div class="form-group">
                   <label>Fecha de Pago:</label>
-                    <div class="input-group date"  id="reservationdate" data-target-input="nearest">
-                        <input type="text" id="fecha_pago" name="fecha_pago" class="form-control1 datetimepicker-input" data-target="#reservationdate"/>
+                    <div class="input-group date"  id="reservationdate" data-target-input="nearest" >
+                    <?php
+                    // Suponiendo que $data['fecha_ingreso'] contiene la fecha en formato yyyy/mm/dd
+                    // Convertimos la fecha al formato dd/mm/yyyy
+                    $fecha_pago_dd_mm_yyyy = date("d-m-Y", strtotime($pagos['fecha']));
+                    ?>
+                         <input type="text" id="fecha_pago" name="fecha_pagoAct" class="form-control1 datetimepicker-input" data-target="#reservationdate" value="<?= $fecha_pago_dd_mm_yyyy; ?>"/>
                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -271,42 +259,59 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Foto</label>
-                    <input class="form-control" type="file" name="imagen" id="imagen" accept=".jpg,.png">
+                    <input class="form-control" type="file" name="imagenAct" id="imagen" accept=".jpg,.png">
               </div>
+              
               <div class="form-group">
               <label for="">Metodo de pago</label>
-        <select name="met_pago" class="form-control" id="met_pago">
-        <option value="Efectivo">Efectivo</option>
-        <option value="Yape">Yape</option>
-        <option value="Tarjeta">Tarjeta</option>  
+              <?php
+                  $metodos_pago = ["Tarjeta", "Efectivo", "Yape"];
+                  $metodo_pago_seleccionado = $pagos['metodo_pago']; // Suponiendo que esto contiene el método de pago desde la base de datos
+                ?>
+
+        <select name="met_pagoAct" class="form-control" id="met_pago">
+        <?php foreach ($metodos_pago as $metodo): ?>
+        <option value="<?= $metodo; ?>" <?= $metodo == $metodo_pago_seleccionado ? 'selected' : ''; ?>>
+            <?= $metodo; ?>
+        </option>
+    <?php endforeach; ?>
         </select>
         <br>
         <label for="">Tipo de Pago</label>
-        <select name="tip_pago" class="form-control" id="tip_pago">
-        <option value="Mensual">Mensual</option>
-        <option value="Anual">Anual</option>
+        <?php
+        $tipo_pago = [
+            'Mensual','Anual'
+        ];
+        $tipo_pago_seleccionado = $pagos['tipo_pago']; // Suponiendo que esto contiene el mes correspondiente desde la base de datos
+        ?>
+        <select name="tip_pagoAct" class="form-control" id="tip_pago">
+        <?php foreach ($tipo_pago as $tip_pago): ?>
+        <option value="<?= $tip_pago; ?>" <?= $tip_pago == $tipo_pago_seleccionado ? 'selected' : ''; ?>>
+            <?= $tip_pago; ?>
+        </option>
+        <?php endforeach; ?>
         </select>
         <br>
         <label for="">Mes correspondiente</label>
-        <select name="mes_pago" class="form-control" id="mes_pago">
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo">Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
+        <?php
+        $meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        $mes_seleccionado = $pagos['mes_correspon']; // Suponiendo que esto contiene el mes correspondiente desde la base de datos
+        ?>
+        <select name="mes_pagoAct" class="form-control" id="mes_pago">
+        <?php foreach ($meses as $mes): ?>
+        <option value="<?= $mes; ?>" <?= $mes == $mes_seleccionado ? 'selected' : ''; ?>>
+            <?= $mes; ?>
+        </option>
+    <?php endforeach; ?>
         </select>
         </div>  
                   <!-- /.input group -->
                 <br>
                 <div class="container">
-                  <button type="submit" class="btn btn-primary">Registrar pago</button>
+                  <button type="submit" class="btn btn-primary">Actualizar pago</button>
                 </div>
               </div>
               <!-- /.card-body -->
@@ -436,7 +441,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 </script>
 
 <script>
-    document.getElementById('tip_pago').addEventListener('change', function() {
+   document.getElementById('tip_pago').addEventListener('change', function() {
         var tipoPago = this.value;
         var mesPagoSelect = document.getElementById('mes_pago');
 
@@ -450,21 +455,27 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         } else {
             // Restablecer las opciones mensuales
             mesPagoSelect.innerHTML = `
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-                <option value="Abril">Abril</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Junio">Junio</option>
-                <option value="Julio">Julio</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Septiembre">Septiembre</option>
-                <option value="Octubre">Octubre</option>
-                <option value="Noviembre">Noviembre</option>
-                <option value="Diciembre">Diciembre</option>
+                <?php foreach ($meses as $mes): ?>
+                    <option value="<?= $mes; ?>"><?= $mes; ?></option>
+                <?php endforeach; ?>
             `;
         }
     });
+
+    // Al cargar la página, verifica el tipo de pago y actualiza las opciones del mes correspondiente
+    window.onload = function() {
+        var tipoPago = document.getElementById('tip_pago').value;
+        var mesPagoSelect = document.getElementById('mes_pago');
+
+        if (tipoPago === 'Anual') {
+            // Limpiar opciones y agregar una única opción para todo el año
+            mesPagoSelect.innerHTML = '';
+            var option = document.createElement('option');
+            option.text = 'Un año completo';
+            option.value = 'Un año completo';
+            mesPagoSelect.appendChild(option);
+        }
+    };
 </script>
 
 

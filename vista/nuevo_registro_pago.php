@@ -223,95 +223,100 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     
     
     <form action="../modelo/guardar_datos.php" method="post" enctype="multipart/form-data">
-        <div class="row">
-          <div class="col-md-12">
-
+    <div class="row">
+        <!-- Columna 1 -->
+        <div class="col-md-6">
             <div class="card card-success">
-              
-              <div class="card-body">
-              <div class="form-group">
-                    <label for="exampleInputEmail1">RUC</label>
-                    <select name="cliente" class="form-control" id="cliente">
-        <option value="default" class="form-control" selected>Selecciona un ruc</option>
-        <?php
-            // Iterar sobre los resultados y llenar el elemento select
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='{$row["id"]}'>{$row["ruc"]}</option>";
-                print_r($row);
-            }
-            ?>
-        </select>
-              </div>
-              <div class="form-group">
-                    <label for="exampleInputEmail1">Empresa</label>
-                    <input type="text" id="nombre"  class="form-control" name="nombre" readonly>
-              </div>
-              
-              <div class="form-group">
-                    <label for="exampleInputEmail1">Direccion</label>
-                    <input type="text" id="direccion"  class="form-control" name="direccion" readonly>
-              </div>
-              <div class="form-group">
-                    <label for="exampleInputEmail1">Celular</label>
-                    <input type="text" id="celular"  class="form-control" name="celular" readonly>
-              </div>
-              <div class="form-group">
-                    <label for="exampleInputEmail1">Monto</label>
-                    <input type="number" class="form-control" id="monto" name="monto" placeholder="Monto">
-              </div>
-                <!-- Date dd/mm/yyyy -->
-                <div class="form-group">
-                  <label>Fecha de Pago:</label>
-                    <div class="input-group date"  id="reservationdate" data-target-input="nearest">
-                        <input type="text" id="fecha_pago" name="fecha_pago" class="form-control1 datetimepicker-input" data-target="#reservationdate"/>
-                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">RUC</label>
+                        <select name="cliente" class="form-control" id="cliente">
+                            <option value="default" class="form-control" selected>Selecciona un ruc</option>
+                            <?php
+                            // Iterar sobre los resultados y llenar el elemento select
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='{$row["id"]}'>{$row["ruc"]}</option>";
+                                print_r($row);
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Empresa</label>
+                        <input type="text" id="nombre"  class="form-control" name="nombre" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Direccion</label>
+                        <input type="text" id="direccion"  class="form-control" name="direccion" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Celular</label>
+                        <input type="text" id="celular"  class="form-control" name="celular" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Monto</label>
+                        <input type="number" class="form-control" id="monto" name="monto" placeholder="Monto">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Foto</label>
-                    <input class="form-control" type="file" name="imagen" id="imagen" accept=".jpg,.png">
-              </div>
-              <div class="form-group">
-              <label for="">Metodo de pago</label>
-        <select name="met_pago" class="form-control" id="met_pago">
-        <option value="Efectivo">Efectivo</option>
-        <option value="Yape">Yape</option>
-        <option value="Tarjeta">Tarjeta</option>  
-        </select>
-        <br>
-        <label for="">Tipo de Pago</label>
-        <select name="tip_pago" class="form-control" id="tip_pago">
-        <option value="Mensual">Mensual</option>
-        <option value="Anual">Anual</option>
-        </select>
-        <br>
-        <label for="">Mes correspondiente</label>
-        <select name="mes_pago" class="form-control" id="mes_pago">
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo">Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
-        </select>
-        </div>  
-                  <!-- /.input group -->
-                <br>
-                <div class="container">
-                  <button type="submit" class="btn btn-primary">Registrar pago</button>
-                </div>
-              </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+        </div>
+
+        <!-- Columna 2 -->
+        <div class="col-md-6">
+            <div class="card card-success">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Fecha de Pago</label>
+                        <div class="input-group date"  id="reservationdate" data-target-input="nearest">
+                            <input type="text" id="fecha_pago" name="fecha_pago" class="form-control1 datetimepicker-input" data-target="#reservationdate"/>
+                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Foto</label>
+                        <input class="form-control" type="file" name="imagen" id="imagen" accept=".jpg,.png">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Metodo de pago</label>
+                        <select name="met_pago" class="form-control" id="met_pago">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Yape">Yape</option>
+                            <option value="Tarjeta">Tarjeta</option>  
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Tipo de Pago</label>
+                        <select name="tip_pago" class="form-control" id="tip_pago">
+                            <option value="Mensual">Mensual</option>
+                            <option value="Anual">Anual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mes correspondiente</label>
+                        <select name="mes_pago" class="form-control" id="mes_pago">
+                            <option value="Enero">Enero</option>
+                            <option value="Febrero">Febrero</option>
+                            <option value="Marzo">Marzo</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Mayo">Mayo</option>
+                            <option value="Junio">Junio</option>
+                            <option value="Julio">Julio</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Septiembre">Septiembre</option>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
+                        </select>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <button type="submit" class="btn btn-primary">Registrar pago</button>
+    </div>
 </form>
 
     

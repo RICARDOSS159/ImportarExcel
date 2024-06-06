@@ -1,6 +1,13 @@
 <?php
 // Inicia la sesión (si no está iniciada)
 session_start();
+// Verifica si el usuario está autenticado o cumple con ciertos criterios
+if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['username'] || !$_SESSION['contrasenia']){
+  // Si no está autenticado o no cumple con los criterios, redirige a la página de inicio de sesión o a otra página de acceso no autorizado
+  header("Location: login.php");
+  exit();
+}
+
 
 include('../modelo/conexion.php');
   $user_id = $_SESSION['user_id'];
@@ -14,12 +21,8 @@ include('../modelo/conexion.php');
       $nombreUsuario = "Usuario Desconocido";
   }
 
-// Verifica si el usuario está autenticado o cumple con ciertos criterios
-if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['username'] || !$_SESSION['contrasenia']){
-    // Si no está autenticado o no cumple con los criterios, redirige a la página de inicio de sesión o a otra página de acceso no autorizado
-    header("Location: login.php");
-    exit();
-}
+
+  
 
 ?>
 
@@ -64,11 +67,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 <?php
   header("Content-Type: text/html;charset=utf-8");
   include('../modelo/conexion.php');
-  include('../modelo/actualizar_cliente.php');
-  $sqlClientes = ("SELECT id,ruc,nombre,celular,DATE_FORMAT(fecha_ingreso, '%d/%m/%Y') AS fecha_form_ingreso,
-  DATE_FORMAT(fecha_activacion, '%d/%m/%Y') AS fecha_form_acti,direccion FROM cliente ORDER BY id ASC");
-  $queryData   = mysqli_query($mysqli, $sqlClientes);
-  $total_client = mysqli_num_rows($queryData);
+
   ?>
 
   <!-- Preloader -->
@@ -186,6 +185,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     <div class="text-center d-flex justify-content-center">
     
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    
     <?header("Content-Type: text/html;charset=utf-8");?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" name="Nuevo" href="registrar_pago.php">REGISTRAR PAGO</button>&nbsp;&nbsp;
     <button class="btn btn-success" name="Todo" href="lista_pagos.php">MOSTRAR TODO</button>&nbsp
@@ -269,28 +269,10 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                                 
                             </div>
                             
-                        </form>
+</form>
                        
 
-                       <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['accion'])) {
-        $accion = $_POST['accion'];
-        
-        if ($accion === "buscar") {
-            // Procesar la búsqueda por nombre
-            $nombre = $_POST['ruc'];
-            // Realizar la consulta o la acción correspondiente utilizando el nombre
-        } elseif ($accion === "informe") {
-            // Generar el informe utilizando el nombre
-            $nombre = $_POST['ruc'];
-            $anio=$_POST['anio'];
-            // Generar el informe utilizando el nombre proporcionado
-        } else {
-            // Manejar otros casos o mostrar un mensaje de error
-        }
-    }
-}
-         ?>               
+                             
  <?php 
  include('../modelo/filtrar_mes.php');
 // Verifica si se está filtrando por me

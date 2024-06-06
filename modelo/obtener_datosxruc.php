@@ -68,10 +68,7 @@ if(isset($_POST['ruc'])) {
             } else {
                 $tabla .= '<td></td>'; // Celda vacía si no se ha generado la boleta
             }
-            $tabla .= '<td><form action="actualizar_pagos.php" method="post">
-            <input type="hidden" name="idpago" value="'.$fila['idpago'].'">
-            <button type="submit" class="btn btn-success">Actualizar</button>
-            </form></td>';
+            $tabla .= '<td><a href="../vista/actualizar_pagos.php?idpago=' . $fila['idpago'] . '" class="btn btn-info">Actualizar</a></td>';
             $tabla .= '</tr>';
         }
 
