@@ -39,6 +39,18 @@ require '../modelo/conexion.php';
 
                  <?php
                     session_start();
+                     // Función para verificar los requisitos de la contraseña
+                     function validar_contraseña($password) {
+                      // Verificar si la contraseña comienza con una letra mayúscula
+                      if (!preg_match('/^[A-Z]/', $password)) {
+                          return false;
+                      }
+                      // Verificar si la contraseña contiene al menos un carácter especial
+                      if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+                          return false;
+                      }
+                      return true;
+                    }
                     //VERIFICAR QUE LOS CAMPOS NO ESTEN VACIOS
                     if (!empty($_POST['btningresar'])) {
                       if (empty($_POST['username']) || empty($_POST['contrasenia'])) {
@@ -47,11 +59,15 @@ require '../modelo/conexion.php';
                           // Recuperar las credenciales del formulario
                           $username = $_POST['username'];
                           $password = $_POST['contrasenia'];
-                  
+
+                          if(!validar_contraseña($password)){
+                            echo "<div class='alert alert-danger'>La contraseña debe comenzar con una letra mayúscula y contener al menos un carácter especial.</div>";
+                            
+                          }else{
                           // Consulta para verificar las credenciales y obtener el ID del usuario
                           $sql = "SELECT id_usuario, usuario, contrasenia FROM usuario WHERE BINARY usuario = '$username' AND BINARY contrasenia = '$password'";
                           $result = $mysqli->query($sql);
-                  
+
                           if ($result->num_rows > 0) {
                               $datos = $result->fetch_object();
                               // Establecer las variables de sesión
@@ -60,9 +76,10 @@ require '../modelo/conexion.php';
                               $_SESSION['contrasenia'] = $datos->contrasenia;
                               header("Location: menu-plantilla.php");
                               exit();
-                          } else {
-                              echo '<div class="alert alert-danger">CREDENCIALES INVALIDAS O CAMPOS INCOMPLETOS</div>';
+                          }else {
+                            echo '<div class="alert alert-danger">CREDENCIALES INVALIDAS O CAMPOS INCOMPLETOS</div>';
                           }
+                        }
                       }
                   }
                   
