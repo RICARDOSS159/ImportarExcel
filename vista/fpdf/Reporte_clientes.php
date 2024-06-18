@@ -11,42 +11,10 @@ class PDF extends FPDF
    function Header()
    {
       
-      //include '../../modelo/conexion.php';//llamamos a la conexion BD
-
-      //$consulta_info = $conexion->query(" select *from hotel ");//traemos datos de la empresa desde BD
-      //$dato_info = $consulta_info->fetch_object();
       $this->Image('../logo.jpg', 185, 5, 20); //logo de la empresa,moverDerecha,moverAbajo,tamañoIMG
       $this->SetFont('Arial', 'B', 19); //tipo fuente, negrita(B-I-U-BIU), tamañoTexto
       $this->Cell(45); // Movernos a la derecha
       $this->SetTextColor(0, 0, 0); //color
-      //creamos una celda o fila
-      /*$this->Cell(110, 15, utf8_decode('NOMBRE EMPRESA'), 1, 1, 'C', 0); // AnchoCelda,AltoCelda,titulo,borde(1-0),saltoLinea(1-0),posicion(L-C-R),ColorFondo(1-0)
-      $this->Ln(3); // Salto de línea
-      $this->SetTextColor(103);*/ //color
-
-      /* UBICACION 
-      $this->Cell(110);  // mover a la derecha
-      $this->SetFont('Arial', 'B', 10);
-      $this->Cell(96, 10, utf8_decode("Ubicación : "), 0, 0, '', 0);
-      $this->Ln(5);
-
-      /* TELEFONO 
-      $this->Cell(110);  // mover a la derecha
-      $this->SetFont('Arial', 'B', 10);
-      $this->Cell(59, 10, utf8_decode("Teléfono : "), 0, 0, '', 0);
-      $this->Ln(5);
-
-      /* COREEO 
-      $this->Cell(110);  // mover a la derecha
-      $this->SetFont('Arial', 'B', 10);
-      $this->Cell(85, 10, utf8_decode("Correo : "), 0, 0, '', 0);
-      $this->Ln(5);
-
-      /* TELEFONO 
-      $this->Cell(110);  // mover a la derecha
-      $this->SetFont('Arial', 'B', 10);
-      $this->Cell(85, 10, utf8_decode("Sucursal : "), 0, 0, '', 0);
-      $this->Ln(10);*/
     
       $ruc = $_POST['ruc'];
       $mes=isset($_POST['mes']) ? intval($_POST['mes']) : null;
@@ -72,7 +40,7 @@ class PDF extends FPDF
       $titulo .= " de $ruc";
      }
      if (!empty($mes_nombre) && !empty($anio)) {
-      $titulo .= "de $mes_nombre $anio";
+      $titulo .= " de $mes_nombre $anio";
      }elseif (!empty($anio)) {
       $titulo .= " del año $anio";
      }
@@ -97,16 +65,16 @@ class PDF extends FPDF
          $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
          $this->Cell(45, 10, utf8_decode('METODO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
-         $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
-         $this->Cell(30, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
+         $this->Cell(29, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1); // Ajuste del ancho y alineación
+         $this->Cell(34, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
       }
       else{
       $this->Cell(18, 10, utf8_decode('N°'), 1, 0, 'C', 1);
       $this->Cell(40, 10, utf8_decode('EMPRESA'), 1, 0, 'C', 1);
       $this->Cell(28, 10, utf8_decode('MONTO'), 1, 0, 'C', 1);
       $this->Cell(35, 10, utf8_decode('FECHA DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(30, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1);
-      $this->Cell(30, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
+      $this->Cell(29, 10, utf8_decode('TIPO DE PAGO'), 1, 0, 'C', 1);
+      $this->Cell(34, 10, utf8_decode('MES DE PAGO'), 1, 1, 'C', 1);
       }
    }
 
@@ -126,11 +94,6 @@ class PDF extends FPDF
 
 include '../../modelo/conexion.php';
 include '../../modelo/filtrar_mes.php';
-//require '../../funciones/CortarCadena.php';
-/* CONSULTA INFORMACION DEL HOSPEDAJE */
-//$consulta_info = $conexion->query(" select *from hotel ");
-//$dato_info = $consulta_info->fetch_object();
-
 $pdf = new PDF();
 $pdf->AddPage(); /* aqui entran dos para parametros (horientazion,tamaño)V->portrait H->landscape tamaño (A3.A4.A5.letter.legal) */
 $pdf->AliasNbPages(); //muestra la pagina / y total de paginas
@@ -204,15 +167,15 @@ $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
 $pdf->Cell(35, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
 $pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
 $pdf->Cell(45, 10, utf8_decode($datos_reporte->metodo_pago), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
+$pdf->Cell(29, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
+$pdf->Cell(34, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
 }else{
 $pdf->Cell(18, 10, utf8_decode($i), 1, 0, 'C', 0);
 $pdf->Cell(40, 10, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
 $pdf->Cell(28, 10, utf8_decode($datos_reporte->monto), 1, 0, 'C', 0);
 $pdf->Cell(35, 10, utf8_decode($fecha_formateada), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
-$pdf->Cell(30, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
+$pdf->Cell(29, 10, utf8_decode($datos_reporte->tipo_pago), 1, 0, 'C', 0);
+$pdf->Cell(34, 10, utf8_decode($datos_reporte->mes_correspon), 1, 1, 'C', 0);
 }
 }
 

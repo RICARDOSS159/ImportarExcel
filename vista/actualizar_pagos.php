@@ -37,6 +37,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../vista/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="../vista/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -215,11 +217,9 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
     
     <form action="../modelo/actualizar_pagos.php" method="post" enctype="multipart/form-data">
         <div class="row">
-          <div class="col-md-12">
-
+        <div class="col-md-6">
             <div class="card card-success">
-              
-              <div class="card-body">
+                <div class="card-body">
               <input type="hidden" name="idpagoAct" value="<?= $pagos['idpago']; ?>">
               <div class="form-group">
                     <label for="exampleInputEmail1">RUC</label>
@@ -242,6 +242,13 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
                     <label for="exampleInputEmail1">Monto</label>
                     <input type="number" class="form-control" id="monto" name="montoAct" value="<?= $pagos['monto']; ?>" placeholder="Monto">
               </div>
+                </div> 
+              </div>
+            </div>
+            <!-- Columna 2 -->
+        <div class="col-md-6">
+            <div class="card card-success">
+                <div class="card-body">
                 <!-- Date dd/mm/yyyy -->
                 <div class="form-group">
                   <label>Fecha de Pago:</label>
@@ -276,7 +283,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         </option>
     <?php endforeach; ?>
         </select>
-        <br>
+        </div>
+        <div class="form-group">
         <label for="">Tipo de Pago</label>
         <?php
         $tipo_pago = [
@@ -291,7 +299,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         </option>
         <?php endforeach; ?>
         </select>
-        <br>
+        </div>
+        <div class="form-group">
         <label for="">Mes correspondiente</label>
         <?php
         $meses = [
@@ -309,14 +318,17 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         </select>
         </div>  
                   <!-- /.input group -->
-                <br>
-                <div class="container">
-                  <button type="submit" class="btn btn-primary">Actualizar pago</button>
-                </div>
+                
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
+             </div>
+             <div>
+             </div>
+            <div class="container">
+                  <button type="submit" class="btn btn-primary">Actualizar pago</button>
+            </div>
 </form>
 
     
@@ -388,11 +400,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
       theme: 'bootstrap4'
     })
 
-    //Datemask dd/mm/yyyy
-    /*$('#datemask').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
-    //Datemask2 mm/dd/yyyy
-    $('#datemask2').inputmask('yyyy/mm/dd', { 'placeholder': 'mm/dd/yyyy' })*/
-    //Money Euro
+    
     $('[data-mask]').inputmask()
 
     //Date picker
@@ -413,7 +421,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
       // Obtiene el valor del campo de fecha de ingreso
       var fechaPago = $('#reservationdate input').val();
       // Convierte la fecha al formato deseado (YYYY-MM-DD)
-      var fechaIngresoFormateada = moment(fechaPago, 'DD/MM/YYYY').format('YYYY-MM-DD');
+      var fechaIngresoFormateada = moment(fechaPago, 'DD/MM/YYYY').format('YYYY/MM/DD');
 
       // Asigna la fecha formateada de vuelta al campo de fecha
       $('#reservationdate input').val(fechaIngresoFormateada);

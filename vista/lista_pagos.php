@@ -30,7 +30,7 @@ include('../modelo/conexion.php');
 <?php 
     if (isset($_POST["Nuevo"])) {
       // Acción para el Botón 2
-      header("Location: nuevo_registro_pago.php");
+      header("Location: registro_pago.php");
       exit();
   }
 
@@ -83,7 +83,7 @@ include('../modelo/conexion.php');
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="menu-plantilla.php" class="nav-link">Menú</a>
+        <a href="menu.php" class="nav-link">Menú</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="importar.php" class="nav-link">Importar clientes</a>
@@ -112,7 +112,7 @@ include('../modelo/conexion.php');
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="menu-plantilla.php" class="brand-link">
+    <a href="menu.php" class="brand-link">
       <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">DYF CONTADORES</span>
     </a>

@@ -75,7 +75,7 @@
 	$pdf->AddPage();
 
 	# Logo de la empresa formato png #
-	$pdf->Image('logo.png',30,12,35,35,'PNG');
+	$pdf->Image('logodyf.png',10,12,100,35,'PNG');
 
 	# Encabezado y datos de la empresa #
 	$pdf->SetFont('Arial','B',16);

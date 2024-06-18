@@ -46,115 +46,12 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <!-- Theme style -->
   <link rel="stylesheet" href="../vista/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="../vista/dist/css/adminlte.css">
+  <link rel="stylesheet" href="/css/lista_clientes.css">
   
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-<style>
-/* Incluye el CSS aquí o en un archivo externo */
-/* Estilos para el modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto; /* Ajusta el margen superior aquí */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
-  max-width: 500px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-</style>
-
-<style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 800px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .form-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .form-group {
-            flex: 1 1 calc(50% - 20px);
-            box-sizing: border-box;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 90%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .full-width {
-            flex: 1 1 100%;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group .input-group-append {
-            display: flex;
-            align-items: center;
-        }
-        .input-group .input-group-text {
-            padding: 8px;
-        }
-        
-    </style>
 <?php
   header("Content-Type: text/html;charset=utf-8");
   include('../modelo/conexion.php');

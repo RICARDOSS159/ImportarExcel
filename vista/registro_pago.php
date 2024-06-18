@@ -115,7 +115,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="menu-plantilla.php" class="nav-link">Menu</a>
+        <a href="menu.php" class="nav-link">Menu</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="lista_clientes.php" class="nav-link">Lista de clientes</a>
@@ -147,7 +147,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="menu_platilla.php" class="brand-link">
+    <a href="menu.php" class="brand-link">
       <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">DYF CONTADORES</span>
     </a>
@@ -413,7 +413,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
       // Obtiene el valor del campo de fecha de ingreso
       var fechaPago = $('#reservationdate input').val();
       // Convierte la fecha al formato deseado (YYYY-MM-DD)
-      var fechaIngresoFormateada = moment(fechaPago, 'DD/MM/YYYY').format('YYYY-MM-DD');
+      var fechaIngresoFormateada = moment(fechaPago, 'DD/MM/YYYY').format('YYYY/MM/DD');
 
       // Asigna la fecha formateada de vuelta al campo de fecha
       $('#reservationdate input').val(fechaIngresoFormateada);

@@ -18,8 +18,8 @@ $fecha_acti=$_POST['fecha_activacion'];
 
  // Guardar la ruta en la base de datos
  
- $consulta = $mysqli->prepare("INSERT INTO cliente (ruc,nombre,celular,direccion,fecha_ingreso,fecha_activacion) 
- VALUES (?, ?, ?, ?, ?,?)");
+ $consulta = $mysqli->prepare("INSERT INTO cliente (ruc,nombre,celular,direccion,fecha_ingreso,fecha_activacion,estado_cliente) 
+ VALUES (?, ?, ?, ?, ?,?,'Activo')");
  $consulta->bind_param("ssdsss", $ruc,$nombre,$celular, $direccion,$fecha_ingre,$fecha_acti);
 
  // Ejecutar la consulta
