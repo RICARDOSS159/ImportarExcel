@@ -11,12 +11,12 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 }
 
   $user_id = $_SESSION['user_id'];
-  $sql = "SELECT usuario FROM usuario WHERE id_usuario = $user_id";
+  $sql = "SELECT nombre FROM usuario WHERE id_usuario = $user_id";
   $result = $mysqli->query($sql);
   
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      $nombreUsuario = $row['usuario'];
+      $nombreUsuario = $row['nombre'];
   } else {
       $nombreUsuario = "Usuario Desconocido";
   }
@@ -76,7 +76,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="menu-plantilla.php" class="nav-link">Menú</a>
+        <a href="menu.php" class="nav-link">Menú</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="importar.php" class="nav-link">Importar clientes</a>
@@ -105,7 +105,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="menu-plantilla.php" class="brand-link">
+    <a href="menu.php" class="brand-link">
       <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">DYF CONTADORES</span>
     </a>
@@ -204,8 +204,8 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
               </div>
               <br>
               <div class="text-center d-flex justify-content-center">
-                  <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_anual.php';">Actualizar estado de pagos Anual</button>
-                  <button class="btn btn-warning" onclick="window.location.href = '../modelo/actualizar_estado_mensual.php';" style="margin-left:10px">Actualizar estado de pagos Mensual </button>
+                  <button class="btn btn-danger" onclick="window.location.href = '../modelo/actualizar_estado_anual.php';">Actualizar estado de pagos Anual</button>
+                  <button class="btn btn-danger" onclick="window.location.href = '../modelo/actualizar_estado_mensual.php';" style="margin-left:10px">Actualizar estado de pagos Mensual </button>
                   <button id="abrir_modal" class="btn btn-success"  style="margin-left:10px">Agregar nuevo cliente</button>
                   <div id="modal" class="modal" >
                     <div class="modal-content" >

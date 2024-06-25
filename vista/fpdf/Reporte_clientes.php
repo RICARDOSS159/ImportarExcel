@@ -47,7 +47,7 @@ class PDF extends FPDF
      
       /* TITULO DE LA TABLA */
       //color
-      $this->SetTextColor(228, 100, 0);
+      $this->SetTextColor(21, 129, 191);
       $this->Cell(8); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
       $this->Cell(70, 10, utf8_decode($titulo), 0, 1, 'C', 0);
@@ -55,7 +55,7 @@ class PDF extends FPDF
 
       /* CAMPOS DE LA TABLA */
       //color
-      $this->SetFillColor(228, 100, 0); //colorFondo
+      $this->SetFillColor(21, 129, 191); //colorFondo
       $this->SetTextColor(255, 255, 255); //colorTexto
       $this->SetDrawColor(163, 163, 163); //colorBorde
       $this->SetFont('Arial', 'B', 11);

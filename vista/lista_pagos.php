@@ -11,12 +11,12 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
 
 include('../modelo/conexion.php');
   $user_id = $_SESSION['user_id'];
-  $sql = "SELECT usuario FROM usuario WHERE id_usuario = $user_id";
+  $sql = "SELECT nombre FROM usuario WHERE id_usuario = $user_id";
   $result = $mysqli->query($sql);
   
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      $nombreUsuario = $row['usuario'];
+      $nombreUsuario = $row['nombre'];
   } else {
       $nombreUsuario = "Usuario Desconocido";
   }

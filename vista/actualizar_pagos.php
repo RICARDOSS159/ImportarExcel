@@ -4,12 +4,12 @@ session_start();
 
 include('../modelo/conexion.php');
   $user_id = $_SESSION['user_id'];
-  $sql = "SELECT usuario FROM usuario WHERE id_usuario = $user_id";
+  $sql = "SELECT nombre FROM usuario WHERE id_usuario = $user_id";
   $result = $mysqli->query($sql);
   
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      $nombreUsuario = $row['usuario'];
+      $nombreUsuario = $row['nombre'];
   } else {
       $nombreUsuario = "Usuario Desconocido";
   }
@@ -99,7 +99,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="menu-plantilla.php" class="nav-link">Menu</a>
+        <a href="menu.php" class="nav-link">Menu</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="lista_clientes.php" class="nav-link">Lista de clientes</a>
@@ -131,7 +131,7 @@ if (!isset($_SESSION['username'],$_SESSION['contrasenia']) || !$_SESSION['userna
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="menu_platilla.php" class="brand-link">
+    <a href="menu.php" class="brand-link">
       <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">DYF CONTADORES</span>
     </a>
